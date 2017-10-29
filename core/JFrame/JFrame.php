@@ -22,7 +22,7 @@ class JFrame
         $router = $libRoute->dispatcher();
 
         $control = "ctl" . ucfirst($router['control']);
-        $class = "App\\" . $control;
+        $class = "Module\\" . ucfirst($router['module']) . "\\" . $control;
         $controller = new $class();
         $method = "func" . ucfirst($router['method']);
 

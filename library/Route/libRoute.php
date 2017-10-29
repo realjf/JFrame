@@ -15,6 +15,7 @@ class libRoute
     private $_router = [
         'control' => 'index',
         'method'  => 'index',
+        'module'    => 'index',
     ];
 
 
@@ -55,14 +56,13 @@ class libRoute
             return $this->_router;
         };
         $request = trim($request, '/');
-        $request = str_replace('.html', '', $request);
-        if($request == '') return $this->_router;
-
-        $request = explode('-', $request);
-        if(!is_array($request) || count($request) == 0) return $this->_router;
+        if(!preg_match('/([a-zA-Z]+)\/([a-zA-Z]+)\-([a-zA-Z]+)\.html/i', $request, $match)){
+            return $this->_router;
+        }
         $this->_router = [
-            'control' => $request[0],
-            'method'  => $request[1],
+            'module' => $match[1],
+            'control' => $match[2],
+            'method'  => $match[3],
         ];
         return $this->_router;
     }

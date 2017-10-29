@@ -18,18 +18,17 @@ class autoload
             case "core":
                 $dir = JFRAME_CORE_PATH . '/';
                 break;
-            case "config":
-                $dir = JFRAME_CONFIG_PATH . '/';
-                break;
             case "library":
                 $dir = JFRAME_LIBRARY_PATH . '/';
                 break;
-            case "app":
+            case "module":
                 $dir = JFRAME_APP_PATH . '/';
                 break;
             default:
                 break;
         }
+
+        $dir .= $module ? $module . '/' : "";
 
         switch($prefix){
             case 'ctl':
@@ -40,7 +39,7 @@ class autoload
                 $dir .= "template/";break;
         }
 
-        $file = $dir . $module . "/" . ucfirst($className) . ".php";
+        $file = $dir . ucfirst($className) . ".php";
 
         $file = str_replace('\\', '/', $file);
         echo $file . "<br/>";

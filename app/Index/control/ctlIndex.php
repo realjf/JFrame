@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace Module\Index;
 
 
 class ctlIndex
