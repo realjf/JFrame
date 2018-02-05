@@ -16,19 +16,30 @@ class Template
 
     public function __construct()
     {
-
     }
 
+    /**
+     * @param $key
+     * @param $val
+     */
     public function setOption($key, $val)
     {
         $this->__options[$key] = $val;
     }
 
+    /**
+     * @param array $data
+     */
     public function setOptions(array $data)
     {
         foreach ($data as $k => $v){
             $this->__options[$k] = $v;
         }
+    }
+
+    public function assign()
+    {
+
     }
 
     public function display($tpl, $data, $tplDir = '')
