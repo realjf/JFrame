@@ -16,6 +16,7 @@ class libRoute
         'control' => 'index',
         'method'  => 'index',
         'module'    => 'index',
+        'namespace' => 'Module\\Index',
     ];
 
 
@@ -59,10 +60,14 @@ class libRoute
         if(!preg_match('/([a-zA-Z]+)\/([a-zA-Z]+)\-([a-zA-Z]+)\.html/i', $request, $match)){
             return $this->_router;
         }
+        $module = $match[1] ?: 'index';
+        $control = $match[2] ?: 'index';
+        $method = $match[3] ?: 'index';
         $this->_router = [
-            'module' => $match[1] ?: 'index',
-            'control' => $match[2] ?: 'index',
-            'method'  => $match[3] ?: 'index',
+            'module' => $module,
+            'control' => $control,
+            'method'  => $method,
+            'namespace' => 'Module\\' . $module,
         ];
         return $this->_router;
     }

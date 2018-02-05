@@ -9,4 +9,10 @@ spl_autoload_register([new autoload(), 'run']);
 
 // bootstrap
 $JFrame = new JFrame();
-$JFrame->run();
+
+try{
+    $JFrame->run();
+}catch (Exception $e) {
+    echo "system error!";
+    exit();
+}
