@@ -3,16 +3,9 @@
 namespace Core\JFrame;
 
 use Library\Route\libRoute;
-use Noodlehaus\Config;
 
 class JFrame
 {
-    private $_config;
-
-    public function __construct()
-    {
-        $this->_config = new Config(JFRAME_CONFIG_PATH . '/config.ini');
-    }
 
     public function run()
     {

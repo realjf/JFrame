@@ -1,4 +1,5 @@
 <?php
+//error_reporting(7);
 
 define("JFRAME_PATH", dirname(__DIR__));
 define("JFRAME_CORE_PATH", JFRAME_PATH . '/core');

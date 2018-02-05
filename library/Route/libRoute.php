@@ -8,10 +8,10 @@
 
 namespace Library\Route;
 
+use Core\JFrame\Config;
+
 class libRoute
 {
-    private $_config;
-
     private $_router = [
         'control' => 'index',
         'method'  => 'index',
@@ -19,16 +19,10 @@ class libRoute
         'namespace' => 'Module\\Index',
     ];
 
-
-    public function __construct()
-    {
-        $this->_config = new \Noodlehaus\Config(JFRAME_CONFIG_PATH . '/config.ini');
-    }
-
     public function dispatcher()
     {
         $request = $this->getUri();
-        switch($this->_config->get('route.model')){
+        switch(Config::instance()->read('route.model')){
             case 'path' : // /index/run/id/1 （需要开启服务器rewrite模块，并且配置.htaccess）
                 return [];
             case 'rewrite':

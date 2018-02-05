@@ -27,8 +27,3 @@ class Output
         exit();
     }
 }
-
-function __a()
-{
-    \Core\JFrame\Output::abort(func_get_args());
-}
