@@ -42,7 +42,6 @@ class autoload
         $file = $dir . $className . ".php";
 
         $file = str_replace('\\', '/', $file);
-        echo $file . "<br/>";
         if(is_file($file)){
             include($file);
         }

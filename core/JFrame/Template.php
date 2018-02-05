@@ -24,7 +24,7 @@ class Template
         $loader = new \Twig_Loader_Filesystem($tplDir);
         $this->__loader = new \Twig_Environment($loader, array('debug' => true));
         try{
-            $this->__loader->render($tpl, $data);
+            $this->__loader->display($tpl, $data);
         }catch (\Exception $e){
             var_dump($e->getMessage());
             exit();
