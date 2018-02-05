@@ -10,14 +10,5 @@ define("JFRAME_RESOURCE_PATH", JFRAME_PATH . '/public');
 
 define('FRAME_ENV_IS_CLI', PHP_SAPI == 'cli');
 
-
-require_once JFRAME_PATH . '/vendor/autoload.php';
-require_once JFRAME_PATH . '/core/JFrame/Output.php';
-
-// Whoops Exception Handler
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
-
 require_once JFRAME_CORE_PATH . '/bootstrap.php';
 

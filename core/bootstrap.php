@@ -1,5 +1,7 @@
 <?php
 require_once JFRAME_CORE_PATH . '/JFrame/autoload.php';
+require_once JFRAME_PATH . '/vendor/autoload.php';
+require_once JFRAME_PATH . '/core/JFrame/Output.php';
 
 use Core\JFrame\autoload;
 use Core\JFrame\JFrame;
@@ -10,11 +12,21 @@ spl_autoload_register([new autoload(), 'run']);
 // bootstrap
 $JFrame = new JFrame();
 
-try{
+define("SYS_IS_ONLINE", \Core\JFrame\Config::instance()->read('app.env') == 'pro' ? 1 : 0);
+
+if(SYS_IS_ONLINE){
+    try{
+        $JFrame->run();
+    }catch (Exception $e){
+        echo("system error!");
+        exit();
+    }
+}else{
+    // Whoops Exception Handler
+    $whoops = new \Whoops\Run;
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->register();
     $JFrame->run();
-}catch (Exception $e) {
-    echo "system error!";
-    exit();
 }
 
 function __a()

@@ -14,18 +14,22 @@ class autoload
         }
         $dir = "";
         $module = isset($classArr[1]) ? $classArr[1] : "";
-        switch(strtolower($classArr[0])){
-            case "core":
-                $dir = JFRAME_CORE_PATH . '/';
-                break;
-            case "library":
-                $dir = JFRAME_LIBRARY_PATH . '/';
-                break;
-            case "module":
-                $dir = JFRAME_APP_PATH . '/';
-                break;
-            default:
-                break;
+        if($prefix == 'cls'){
+            $dir = JFRAME_LIBRARY_PATH . '/';
+        }else{
+            switch(strtolower($classArr[0])){
+                case "core":
+                    $dir = JFRAME_CORE_PATH . '/';
+                    break;
+                case "library":
+                    $dir = JFRAME_LIBRARY_PATH . '/';
+                    break;
+                case "module":
+                    $dir = JFRAME_APP_PATH . '/';
+                    break;
+                default:
+                    break;
+            }
         }
 
         $dir .= $module ? $module . '/' : "";
