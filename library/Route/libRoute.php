@@ -60,9 +60,9 @@ class libRoute
             return $this->_router;
         }
         $this->_router = [
-            'module' => $match[1],
-            'control' => $match[2],
-            'method'  => $match[3],
+            'module' => $match[1] ?: 'index',
+            'control' => $match[2] ?: 'index',
+            'method'  => $match[3] ?: 'index',
         ];
         return $this->_router;
     }

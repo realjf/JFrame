@@ -23,9 +23,12 @@ class JFrame
 
         $control = "ctl" . ucfirst($router['control']);
         $class = "Module\\" . ucfirst($router['module']) . "\\" . $control;
-        $controller = new $class();
-        $method = "func" . ucfirst($router['method']);
+        if(class_exists($class)){
+            $controller = new $class();
+            $method = "func" . ucfirst($router['method']);
+            $controller->$method();
+        }else{
 
-        $controller->$method();
+        }
     }
 }

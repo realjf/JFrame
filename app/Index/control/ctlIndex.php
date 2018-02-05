@@ -4,17 +4,9 @@
 namespace Module\Index;
 
 
-class ctlIndex
+class ctlIndex extends ctlBase
 {
     public function funcIndex(){
-        echo "我是index默认方法";
-    }
-
-    public function funcRun(){
-        echo "我是index的run方法";
-    }
-
-    public function funcDemo(){
-        echo "我是index的demo方法";
+        $this->display("index.html", ['name' => 'bobby']);
     }
 }

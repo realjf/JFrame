@@ -39,7 +39,7 @@ class autoload
                 $dir .= "template/";break;
         }
 
-        $file = $dir . ucfirst($className) . ".php";
+        $file = $dir . $className . ".php";
 
         $file = str_replace('\\', '/', $file);
         echo $file . "<br/>";
