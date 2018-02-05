@@ -26,6 +26,8 @@ class JFrame
         if(class_exists($class)){
             $controller = new $class();
             $method = "func" . ucfirst($router['method']);
+            $controller->setOptions($router);
+
             $controller->$method();
         }else{
 

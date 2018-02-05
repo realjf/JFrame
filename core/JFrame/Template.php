@@ -19,8 +19,21 @@ class Template
 
     }
 
+    public function setOption($key, $val)
+    {
+        $this->__options[$key] = $val;
+    }
+
+    public function setOptions(array $data)
+    {
+        foreach ($data as $k => $v){
+            $this->__options[$k] = $v;
+        }
+    }
+
     public function display($tpl, $data, $tplDir = '')
     {
+        $tplDir = $tplDir ?:  JFRAME_APP_PATH . "/" . ucfirst($this->__options['module']) . '/template';
         $loader = new \Twig_Loader_Filesystem($tplDir);
         $this->__loader = new \Twig_Environment($loader, array('debug' => true));
         try{

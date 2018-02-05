@@ -13,9 +13,4 @@ use Core\JFrame\Template;
 
 class ctlBase extends Template
 {
-    public function display($tpl, $data, $tplDir = '')
-    {
-        $tplDir = $tplDir ?: __DIR__ . '/../template';
-        parent::display($tpl, $data, $tplDir);
-    }
 }
