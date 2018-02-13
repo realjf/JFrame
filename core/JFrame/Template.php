@@ -54,4 +54,9 @@ class Template
             exit();
         }
     }
+
+    public function response($code, $result = NULL, $msg = '') {
+        $response = new \clsResponse();
+        $response->response($code, $result, $msg);
+    }
 }
