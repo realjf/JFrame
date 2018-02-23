@@ -13,10 +13,10 @@ use Core\JFrame\Config;
 class libRoute
 {
     private $_router = [
-        'control' => 'index',
+        'control' => 'login',
         'method'  => 'index',
-        'module'    => 'index',
-        'namespace' => 'Module\\Index',
+        'module'    => 'admin',
+        'namespace' => 'Module\\Admin',
     ];
 
     public function dispatcher()
@@ -51,11 +51,11 @@ class libRoute
             return $this->_router;
         };
         $request = trim($request, '/');
-        if(!preg_match('/([a-zA-Z]+)\/([a-zA-Z]+)\-([a-zA-Z]+)\.html/i', $request, $match)){
+        if(!preg_match('/([a-zA-Z]+)\/([a-zA-Z]+)(?:\-)([a-zA-Z]+)?(\.html)?/i', $request, $match)){
             return $this->_router;
         }
-        $module = $match[1] ?: 'index';
-        $control = $match[2] ?: 'index';
+        $module = $match[1] ?: 'admin';
+        $control = $match[2] ?: 'login';
         $method = $match[3] ?: 'index';
         $this->_router = [
             'module' => $module,

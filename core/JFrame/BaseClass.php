@@ -13,6 +13,10 @@ class BaseClass
 {
     static private $_modules = array();
 
+    /**
+     * @param string $val
+     * @return mixed|$this
+     */
     static public function instance($val = '')
     {
         $class = get_called_class();    // 获取调用该静态方法的类名（后期静态绑定类）

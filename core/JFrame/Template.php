@@ -42,7 +42,7 @@ class Template
 
     }
 
-    public function display($tpl, $data, $tplDir = '')
+    public function display($tpl, $data = [], $tplDir = '')
     {
         $tplDir = $tplDir ?:  JFRAME_APP_PATH . "/" . ucfirst($this->__options['module']) . '/template';
         $loader = new \Twig_Loader_Filesystem($tplDir);
@@ -55,8 +55,18 @@ class Template
         }
     }
 
+    public function output($codeMsg = '', $result = NULL)
+    {
+        $codes = $codeMsg ? explode(':', $codeMsg) : [];
+        $code = $codes[0] ?: 100;
+        $msg = $codes[1] ?: '';
+        $response = new \clsResponse();
+        $response->response($code, $result, $msg);
+    }
+
     public function response($code, $result = NULL, $msg = '') {
         $response = new \clsResponse();
         $response->response($code, $result, $msg);
     }
+
 }

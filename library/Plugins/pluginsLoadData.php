@@ -27,7 +27,7 @@ class pluginsLoadData
 
     /**
      * @param $name
-     * @return bool
+     * @return \clsDatabase
      */
     static public function database($name)
     {
@@ -37,7 +37,7 @@ class pluginsLoadData
     /**
      * @param $name
      * @param $type
-     * @return bool
+     * @return mixed
      */
     static private function _loadPlugin($name, $type)
     {
@@ -60,7 +60,7 @@ class pluginsLoadData
                     $config['port']
                     );
                 $options = [
-                    'charset'   => $config['charset'] ?: 'utf-8',
+                    'charset'   => $config['charset'] ?: 'utf8',
                 ];
                 $obj = new \clsDatabase($_dsn, $config['username'], $config['password'], $options);
             }else{
