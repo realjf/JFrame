@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Chen JieFeng
- * Date: 2016/11/30
- * Time: 14:58
- * FileName: pluginsRedis.php
- */
 
 namespace Library\Plugins;
 

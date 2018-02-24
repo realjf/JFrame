@@ -270,6 +270,47 @@ class clsTools
         return $str;
     }
 
+    static public function multi($count, $perpage, $page = 1, $name = 'p', $q = TRUE)
+    {
+        $data = [];
+        $data['count'] = max(intval($count), 0);
+        $data['perpage'] = max(intval($perpage), 1);
+        $data['pagecount'] = ceil($data['count'] / $data['perpage']);
+        $data['page'] = max(1, intval($page));
+        $data['start'] = $data['perpage'] * $data['page'] - $data['perpage'];
+        $data['mark'] = $data['start'] + 1;
+        $data['url'] = self::multiUrl($name, $q);
+        return $data;
+    }
+
+    /**
+     * @param      $name
+     * @param bool $q
+     * @return string
+     */
+    static public function multiUrl($name, $q = FALSE)
+    {
+        $uri = str_replace('%', '%%', $_SERVER['REQUEST_URI']);
+        $qs = explode("?", $uri, 2);
+
+        $uri = preg_replace("/-{$name}-\d*(-|$)/is", '$1', $qs[0]);
+
+        $qst = isset($qs[1]) ?: '';
+        if($qst){
+            $qst = preg_replace("/(^|&){$name}=\d*($|&)/is", '$1', $qs[1]);
+            $qst = preg_replace('/(^&|&$)/is', '', $qst);
+        }
+        if($q){
+            $qst .= ($qst ? "&" : "") . "$name=%d";
+        } else{
+            $t = explode(".", $uri, 2);
+            $t[0] = preg_replace("/-?{$name}-\d*/is", '', $t[0]);
+            $pagePre = substr($t[0], -1) == '/' ? '' : '-';
+            $uri = $t[0] . $pagePre . "{$name}-%d" . "." . $t[1];
+        }
+        return $uri . ($qst ? "?" . $qst : '');
+    }
+
     /**
      * 产生随机字符串
      *

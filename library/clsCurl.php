@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Created by JetBrains PhpStorm.
- * User: flycat
- * Date: 11/5/12
- * Time: 6:50 PM
- * To change this template use File | Settings | File Templates.
- */
+
 class clsCurl
 {
     /**

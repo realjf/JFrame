@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Chen JieFeng
- * Date: 2016/11/30
- * Time: 14:43
- * FileName: clsRedis.php
- */
+
 class clsRedis extends Redis
 {
     /**
