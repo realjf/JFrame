@@ -17,6 +17,7 @@ class libRoute
         'method'  => 'index',
         'module'    => 'admin',
         'namespace' => 'Module\\Admin',
+        'uri'       => '/admin/login-index.html'
     ];
 
     public function dispatcher()
@@ -45,12 +46,12 @@ class libRoute
         return $uri;
     }
 
-    public function parseHtmlUri($request)
+    public function parseHtmlUri($uri)
     {
-        if(!$request){
+        if(!$uri){
             return $this->_router;
         };
-        $request = trim($request, '/');
+        $request = trim($uri, '/');
         if(!preg_match('/([a-zA-Z]+)\/([a-zA-Z]+)(?:\-)([a-zA-Z]+)?(\.html)?/i', $request, $match)){
             return $this->_router;
         }
@@ -62,6 +63,7 @@ class libRoute
             'control' => $control,
             'method'  => $method,
             'namespace' => 'Module\\' . $module,
+            'uri'       => $uri,
         ];
         return $this->_router;
     }

@@ -48,6 +48,10 @@ class Template
         $loader = new \Twig_Loader_Filesystem($tplDir);
         $this->__loader = new \Twig_Environment($loader, array('debug' => true));
         try{
+            $data['G_Module'] = $this->__options['module'];
+            $data['G_Method'] = $this->__options['method'];
+            $data['G_Control'] = $this->__options['control'];
+            $data['G_URI']  = $this->__options['uri'];
             $this->__loader->display($tpl, $data);
         }catch (\Exception $e){
             var_dump($e->getMessage());

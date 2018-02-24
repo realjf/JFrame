@@ -13,6 +13,7 @@ spl_autoload_register([new autoload(), 'run']);
 $JFrame = new JFrame();
 
 define("SYS_IS_ONLINE", \Core\JFrame\Config::instance()->read('app.env') == 'pro' ? 1 : 0);
+define("SYS_ENV", \Core\JFrame\Config::instance()->read('app.env'));
 
 if(SYS_IS_ONLINE){
     try{
