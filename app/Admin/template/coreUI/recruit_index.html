@@ -1,0 +1,134 @@
+{% extends "common/base.html" %}
+
+{% block page_style %}
+<style type="text/css">
+    table tr.resume-record:hover {
+        background: #DCDCDC;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ pageTitle }}
+            </div>
+            <div class="card-block">
+                <div class="row-fluid search-forms search-default">
+                    <form action="/admin/recruit-index.html" method="GET" class="form-search ajax-form">
+                        <label class="control-label">跟进人：
+                            <select name="search[follow]">
+                                <option value="">全部</option>
+                                {% for k,v in follows %}
+                                <option value="{{ k }}" {% if k==searchCond.follow %}selected{% endif %}>{{ v }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <label class="control-label">职位类别：
+                            <select name="search[category]">
+                                {% for k,v in categories %}
+                                <option value="{{ k }}" {% if k==searchCond.category %}selected{% endif %}>{{ v }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <label class="control-label">简历状态：
+                            <select name="search[status]">
+                                {% for k,v in applyStatus %}
+                                <option value="{{ k }}" {% if k==searchCond.status %}selected{% endif %}>{{ v }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <button class="btn btn-success " type="submit">搜索 &nbsp;<i class="icon-arrow-right-circle m-icon-white"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>姓名</th>
+                        <th>职位</th>
+                        <th>电话</th>
+                        <th>性别</th>
+                        <th>学历</th>
+                        <th>学校</th>
+                        <th>专业</th>
+                        <th>毕业时间</th>
+                        <th>邮箱</th>
+                        <th>渠道</th>
+                        <th>状态</th>
+                        <th>投递时间</th>
+                        <th>附件</th>
+                        <th class="span3">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, row in data %}
+                    <tr class="resume-record" data-query="id={{ row.resume_id }}&uid={{ row.uid }}">
+                        <td>{{ key+1 }}</td>
+                        <td>{{ users[row.uid]['name'] }}</td>
+                        <td>{{ jobs[row.job_id] }}</td>
+                        <td>{{ users[row.uid]['phone'] }}</td>
+                        <td>{{ users[row.uid]['sex'] }}</td>
+                        <td>{{ users[row.uid]['degree'] }}</td>
+                        <td>{{ users[row.uid]['school'] }}</td>
+                        <td>{{ users[row.uid]['major'] }}</td>
+                        <td>{{ users[row.uid]['graduation_date'] }}</td>
+                        <td>{{ users[row.uid]['email'] }}</td>
+                        <td>{% if row.from==1 %}官网{% else %}微信招聘{% endif %}</td>
+                        <td>
+                            <label class="label {% if row.status < 0 %}label-inverse{% elseif row.status==4 %}label-important{% else %}label-info{% endif %}">{{ statuses[row.status] }}</label>
+                        </td>
+                        <td>{{ row.dateline|date('Y-m-d H:i:s') }}</td>
+                        <td>
+                            {% if attaches[row.uid] is not empty %}
+                            <a class="btn btn-info mini download" data-url="/admin/file-download.html?id={{ attaches[row.uid]['id'] }}" href="javascript:void(0);">下载</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-success mini dialogDo" data-container="container" data-href="/admin/recruit-op.html?action=pass&id={{ row.id }}&status={% if row.status > 0 %}{{ row.status+1 }}{% else %}{{ row.status+2 }}{% endif %}" href="javascript:void(0);">
+                                {% if row.status > 0 %}{{ applyStatus[row.status+1] }}{% else %}{{ applyStatus[row.status+2] }}{% endif %}
+                            </a>
+                            <a class="btn btn-danger mini dialogDo" data-container="container" data-href="/admin/recruit-op.html?action=reject&id={{ row.id }}" href="javascript:void(0);">淘汰</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--/.col-->
+</div>
+{% endblock %}
+
+{% block pager %}
+{% include 'common/pager.html' %}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(function () {
+        $('.download').on('click', function(e){
+            // e.stopPropagation();
+            var url = $(this).data("url");
+            Http.confirm(url, '您确定要下载本附件吗');
+        });
+        $('.resume-record').on('click', function (e) {
+            if(!$(e.target).hasClass('btn')){
+                var query = $(this).data('query');
+                window.open('/admin/recruit-preview.html?' + query, '_blank');
+            }
+        });
+    })
+</script>
+{% endblock %}
+

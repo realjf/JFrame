@@ -1,0 +1,52 @@
+
+/****************** cxdialog *******************/
+
+html,body { height: 100%; }
+
+/* 弹窗*/
+.editor {
+    position:fixed;
+    _position:absolute;
+    top:50%;
+    _top:0;
+    left:50%;
+    padding: 20px 0;
+    height: 380px;
+    width: 400px;
+    z-index:1002;
+    background: #fff;
+    border: 3px solid rgba(0,0,0,0.4);
+}
+
+.editor > a[rev="close"]{position:absolute;top:0;right:0;width:30px;height:30px;color:#e9573f;font:bold 18px/30px Tahoma;text-align:center;text-decoration:none;cursor:pointer;
+    *font-size:12px;
+}
+.editor > a[rev="close"]:before{content:"×";}
+.editor > a[rev="close"]:hover{color:#fc6e51;}
+
+.cxdialog_overlay{
+    display:none;
+    overflow:hidden;
+    position:fixed;
+    _position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1001;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+
+/*工作实践经历表单*/
+
+.exp_dig { width: 800px; height:600px; padding: 0 40px; background-color: #fff; margin: 0 auto; }
+.exp_dig h2 { font-size: 20px; font-weight: normal; margin-bottom: 20px; }
+.exp_dig_list { border: 1px dashed #e6e9eb; padding-top: 20px; margin-bottom: 15px;}
+.exp_dig .ks_ipt {width: 400px;}
+.ks_form table{width:80%; height: 80%; horiz-align: center;}
+
+.ks_act{ padding: 30px 0 10px; width: 300px; margin: 0 auto; clear: both;}
+.ks_btn, .btn_no, .btn_ok{ vertical-align: middle; display: inline-block; text-align: center; border: 1px solid #999; background-color: #fff; width:120px; height:40px; margin-right: 20px; line-height:40px; font-size:16px; color:#333; cursor:pointer; }
+.ks_btnN, .btn_ok { border: 1px solid #68c822; color: #68c822; }

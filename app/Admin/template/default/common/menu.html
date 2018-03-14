@@ -1,0 +1,60 @@
+<li class="start {% if G_Control == 'user' %} active {% endif %}">
+    <a href="javascript:;">
+        <i class="icon-user"></i>
+        <span class="title">用户管理</span>
+        <span class="selected "></span>
+        <span class="arrow open"></span>
+    </a>
+    <ul class="sub-menu">
+        <li {% if G_Control == 'user' and G_Method == 'index' %} class="active" {% else %} {% endif %} >
+            <a href="/admin/user-index.html">注册用户</a>
+        </li>
+        <li {% if G_Method == 'manager' %} class="active" {% else %} {% endif %}>
+            <a href="/admin/user-manager.html">
+                管理员</a>
+        </li>
+    </ul>
+</li>
+<li class="start {% if G_Control == 'job' %} active {% endif %}">
+    <a href="javascript:;">
+        <i class="icon-bullhorn"></i>
+        <span class="title">发布系统</span>
+        <span class="arrow"></span>
+    </a>
+    <ul class="sub-menu">
+        <li {% if G_Control == 'job' and G_Method == 'index' %} class="active" {% else %} {% endif %}>
+            <a href="/admin/job-index.html">职位管理</a>
+        </li>
+        <li {% if G_Method == 'post' %} class="active" {% else %} {% endif %}>
+            <a href="/admin/job-post.html">
+                发布新职位</a>
+        </li>
+        <li {% if G_Method == 'fair' %} class="active" {% else %} {% endif %}>
+            <a href="/admin/job-fair.html">
+                招聘会</a>
+        </li>
+    </ul>
+</li>
+<li class="start {% if G_Control == 'recruit' %} active {% endif %}">
+    <a href="javascript:;">
+        <i class="icon-shopping-cart"></i>
+        <span class="title">招聘系统</span>
+        <span class="arrow"></span>
+    </a>
+    <ul class="sub-menu">
+        <li {% if G_Control == 'recruit' and G_Method == 'index' %} class="active" {% else %} {% endif %}>
+            <a href="/admin/recruit-index.html">简历进程</a>
+        </li>
+        <li {% if G_Method == 'resume' %} class="active" {% else %} {% endif %}>
+            <a href="/admin/resume-index.html">
+                简历库</a>
+        </li>
+        <li {% if G_Method == 'resume' %} class="active" {% else %} {% endif %}>
+        <a href="/admin/recruit-other.html">
+            其他渠道进度反馈</a>
+        </li>
+    </ul>
+</li>
+<li class="start {% if G_Control == 'file' %} active {% endif %}">
+    <a href="/admin/file-index.html"><i class="icon-file-text-alt"></i>文件管理</a>
+</li>

@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="CoreUI Bootstrap 4 Admin Template">
+    <meta name="author" content="Lukasz Holeczek">
+    <meta name="keyword" content="CoreUI Bootstrap 4 Admin Template">
+    <!-- <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
+
+    <title>4399招聘 | 注册页</title>
+
+    <!-- Icons -->
+    <link href="/res/coreUI/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/res/coreUI/css/simple-line-icons.css" rel="stylesheet">
+
+    <!-- Main styles for this application -->
+    <link href="/res/coreUI/css/style.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+</head>
+
+<body class="app flex-row align-items-center">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mx-2">
+                <div class="card-block p-2">
+                    <div style="text-align: center;"><img src="/res/admin/images/logo.png" alt=""></div>
+                    <h2>注册</h2>
+                    <p class="text-muted">创建您的账号</p>
+                    <div class="input-group mb-1">
+                            <span class="input-group-addon"><i class="icon-user"></i>
+                            </span>
+                        <input type="text" class="form-control" placeholder="用户名" name="username">
+                    </div>
+
+                    <div class="input-group mb-1">
+                        <span class="input-group-addon">@</span>
+                        <input type="text" class="form-control" placeholder="邮箱" name="email">
+                    </div>
+
+                    <div class="input-group mb-1">
+                            <span class="input-group-addon"><i class="icon-lock"></i>
+                            </span>
+                        <input type="password" class="form-control" placeholder="密码" name="password">
+                    </div>
+
+                    <div class="input-group mb-2">
+                            <span class="input-group-addon"><i class="icon-lock"></i>
+                            </span>
+                        <input type="password" class="form-control" placeholder="确认密码" name="rpassword">
+                    </div>
+
+                    <button type="button" class="btn btn-block btn-success" id="btn_register">创建账号</button>
+                    <a href="/admin/login-index.html" class="btn btn-block btn-primary">已有账号？现在去登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap and necessary plugins -->
+<script src="/res/coreUI/js/jquery-1.10.1.min.js"></script>
+<script src="/res/coreUI/js/tether.min.js"></script>
+<script src="/res/coreUI/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btn_register").on("click", function () {
+            var url = "/admin/login-register.html";
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    data: {
+                        username: $("input[name='usename']").val(),
+                        password: $("input[name='password']").val(),
+                        rpassword: $("input[name='rpassword']").val(),
+                        email: $("input[name='email']").val()
+                    }
+                },
+                success: function (res) {
+                    if(res.code == 100){
+                        alert(res.message);
+                        window.location.href = "/admin/login-index.html";
+                    }else{
+                        alert(res.message)
+                    }
+                }
+            });
+        })
+    })
+</script>
+
+</body>
+
+</html>

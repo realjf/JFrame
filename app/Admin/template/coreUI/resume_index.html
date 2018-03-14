@@ -1,0 +1,167 @@
+{% extends "common/base.html" %}
+
+{% block page_style %}
+<link href="/res/filter/filter_style.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="/res/media/css/datepicker.css"/>
+<link rel="stylesheet" type="text/css" href="/res/media/css/datetimepicker.css"/>
+<link rel="stylesheet" type="text/css" href="/res/media/css/daterangepicker.css"/>
+<style type="text/css">
+    table tr.resume-record:hover {
+        background: #DCDCDC;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ pageTitle }}
+            </div>
+            <div class="card-block">
+                <div class="row-fluid search-forms search-default">
+                    <form action="/admin/resume-index.html" method="GET" class="form-search ajax-form">
+                        <input id="categories_value" type="hidden" name="search[category]" value="{{ searchCond.category }}">
+                        <input id="status_value" type="hidden" name="search[status]" value="{{ searchCond.status }}">
+                        <div id="categories_div"></div>
+                        <div id="status_div"></div>
+                        <label class="control-label" style="padding: 10px 0;">跟进人
+                            <select name="search[follow]">
+                                <option value="">全部</option>
+                                {% for k,v in follows %}
+                                <option value="{{ k }}" {% if k==searchCond.follow %}selected{% endif %}>{{ v }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label class="control-label">时间段：
+                            <div id="form-date-range" class="btn btn-mini">
+                                <i class="icon-calendar"></i>
+                                &nbsp;<span>{{ searchCond.stime|date('Y-m-d') }} - {{ searchCond.etime|date('Y-m-d') }}</span>
+                                <b class="caret"></b>
+                            </div>&nbsp;
+                            <input type="hidden" name="search[stime]" class="start" value="{{ searchCond.stime|date('Y-m-d') }}">
+                            <input type="hidden" name="search[etime]" class="end" value="{{ searchCond.etime|date('Y-m-d') }}">
+                        </label>
+                        <button class="btn btn-success " type="submit">筛选 &nbsp;<i class="icon-arrow-right-circle m-icon-white"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>姓名</th>
+                        <th>职位</th>
+                        <th>电话</th>
+                        <th>性别</th>
+                        <th>学历</th>
+                        <th>学校</th>
+                        <th>专业</th>
+                        <th>毕业时间</th>
+                        <th>邮箱</th>
+                        <th>渠道</th>
+                        <th>求职状态</th>
+                        <th>附件</th>
+                        <th class="span3">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, row in data %}
+                    <tr class="resume-record" data-query="id={{ row.resume_id }}&uid={{ row.uid }}">
+                        <td>{{ key+1 }}</td>
+                        <td>{{ users[row.uid]['name'] }}</td>
+                        <td>{{ jobs[row.job_id] }}</td>
+                        <td>{{ users[row.uid]['phone'] }}</td>
+                        <td>{{ users[row.uid]['sex'] }}</td>
+                        <td>{{ users[row.uid]['degree'] }}</td>
+                        <td>{{ users[row.uid]['school'] }}</td>
+                        <td>{{ users[row.uid]['major'] }}</td>
+                        <td>{{ users[row.uid]['graduation_date'] }}</td>
+                        <td>{{ users[row.uid]['email'] }}</td>
+                        <td>{% if row.from==1 %}官网{% else %}微信招聘{% endif %}</td>
+                        <td title="{{ row.remarks|striptags }}">
+                            <label class="label {% if row.status < 0 %}label-inverse{% elseif row.status==4 %}label-important{% else %}label-info{% endif %}">{{ applyStatus[row.status] }}</label>
+                        </td>
+                        <td>
+                            {% if attaches[row.uid] is not empty %}
+                            <a class="btn btn-success mini download" data-url="/admin/file-download.html?id={{ attaches[row.uid]['id'] }}" href="javascript:void(0);">下载</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-danger mini ajaxDo" data-refresh="true" title="您确定要删除该简历吗？" data-href="/admin/resume-delete.html?id={{ row.id }}" href="javascript:void(0);">删除</a>
+                            <a class="btn btn-info mini dialogDo" data-refresh="true" data-container="container" data-href="/admin/resume-edit.html?id={{ row.id }}&status={{ row.status }}" href="javascript:void(0);">编辑</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--/.col-->
+</div>
+{% endblock %}
+
+{% block pager %}
+{% include 'common/pager.html' %}
+{% endblock %}
+
+{% block page_js %}
+<script src="/res/filter/filter_js.js" type="text/javascript"></script>
+<script type="text/javascript" src="/res/media/js/date.js"></script>
+<script type="text/javascript" src="/res/media/js/daterangepicker.js"></script>
+<script type="text/javascript" src="/res/common/js/form.js"></script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(function () {
+        $('.download').on('click', function(e){
+            // e.stopPropagation();
+            var url = $(this).data("url");
+            Http.confirm(url, '您确定要下载本附件吗');
+        });
+        var category = {% autoescape false %}{{ categories }}{% endautoescape %};
+        var oldCategory = {% autoescape false %}{{ oldCategory }}{% endautoescape %};
+        $('#categories_div').comboboxfilter({
+            url: '/admin/resume-index.html',
+            scope: 'FilterQuery3',
+            data:category,
+            oldData: oldCategory,
+            valueId: 'categories_value,status_value',
+            onChange:function(newValue){
+                $('#categories_value').val(newValue);
+            }
+        });
+        var statuses = {% autoescape false %}{{ status }}{% endautoescape %};
+        var oldStatus = {% autoescape false %}{{ oldStatus }}{% endautoescape %};
+        $('#status_div').comboboxfilter({
+            url: '/admin/resume-index.html',
+            scope: 'FilterQuery3',
+            multiple: true,
+            data:statuses,
+            oldData: oldStatus,
+            onChange:function(newValue){
+                $('#status_value').val(newValue);
+            }
+        });
+
+        $('.resume-record').on('click', function (e) {
+            if(!$(e.target).hasClass('btn')){
+                var query = $(this).data('query');
+                window.open('/admin/recruit-preview.html?' + query, '_blank');
+            }
+        });
+
+        Form.daterangepicker('#form-date-range');
+    })
+</script>
+{% endblock %}

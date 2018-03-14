@@ -1,0 +1,47 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box blue">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-coffee"></i>{{ pageTitle }}</div>
+    </div>
+    <div class="portlet-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>管理员名称</th>
+                <th>邮箱</th>
+                <th>最近登录ip</th>
+                <th>最近登录时间</th>
+                <th>账号类型</th>
+                <th>账号状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, row in data %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.email }}</td>
+                <td>{{ row.last_login_ip }}</td>
+                <td>{{ row.last_login_time }} </td>
+                <td>{% if row.type==1 %}<label class="label label-success">超管</label>{% else %}<label class="label">普通</label>{% endif %}</td>
+                <td>{% if row.status==1 %}<label class="label label-success">正常</label>{% else %}<label class="label label-inverse">禁用</label>{% endif %}</td>
+                <td>{{ row.ctime }}</td>
+                <td>
+
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- END EXAMPLE TABLE PORTLET-->
+
+{% endblock %}

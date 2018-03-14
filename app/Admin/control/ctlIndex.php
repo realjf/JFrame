@@ -13,7 +13,7 @@ class ctlIndex extends ctlBase
 {
     public function funcIndex()
     {
-        $id = \clsVars::get('id')->toInt();
-        $this->display('index.html', ['title' => 'hello world']);
+        $this->needLogin();
+        $this->display('index.html');
     }
 }

@@ -1,0 +1,64 @@
+<div class="row-fluid">
+    <div class="pagination pull-left">
+        <div class="dataTables_info">
+            <select class="small m-wrap" tabindex="1" onchange="pagesize($(this).val());" geturl="{{ G_Paginator.PageLink }}1&n=20">
+                <option value="20" {% if G_Paginator.Perpage == 20 %} selected="selected" {% endif %}>20</option>
+                <option value="50" {% if G_Paginator.Perpage == 50 %} selected="selected" {% endif %}>50</option>
+                <option value="100" {% if G_Paginator.Perpage == 100 %} selected="selected" {% endif %}>100</option>
+                <option value="150" {% if G_Paginator.Perpage == 150 %} selected="selected" {% endif %}>150</option>
+                <option value="200" {% if G_Paginator.Perpage == 200 %} selected="selected" {% endif %}>200</option>
+            </select>每页显示
+        </div>
+    </div>
+    <div class="dataTables_paginate paging_bootstrap pagination pull-right">
+        <ul>
+            <li class="disabled">
+                <a>共{{ G_Paginator.PageNums }}页，{{ G_Paginator.Nums }}个记录</a>
+            </li>
+            {% if G_Paginator.HasPrev %}
+            <li><a href="{{ G_Paginator.PageLink }}1">首页</a></li>
+            <li><a href="{{ G_Paginator.PageLinkPrev }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><a>首页</a></li>
+            <li class="disabled"><a>&laquo;</a></li>
+            {% endif %}
+            {% for page in G_Paginator.Pages %}
+            {% if page.IsActive ==1 %}
+            <li  class="active">
+                <a href="#">{{ page.Page }}</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{{ page.PageLink }}">{{ page.Page }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if G_Paginator.HasNext == 1 %}
+            <li><a href="{{ G_Paginator.PageLinkNext }}">&raquo;</a></li>
+            <li><a href="{{ G_Paginator.PageLink }}{{ G_Paginator.PageNums }}">末页</a></li>
+            {% else %}
+            <li class="disabled"><a>&raquo;</a></li>
+            <li class="disabled"><a>末页</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    function pagesize(num) {
+        var url = window.location.href;
+        var pattern = 'n=([^&]*)';
+        var replaceText = 'n=' + num;
+        if(url.match(pattern)) {
+            var tmp = '/(n=)([^&]*)/gi';
+            url = url.replace(eval(tmp), replaceText);
+        }else {
+            if(url.match('[\?]')) {
+                url = url + '&' + replaceText;
+            }else {
+                url = url + '?' + replaceText;
+            }
+        }
+        window.location.href = url;
+    }
+</script>
+

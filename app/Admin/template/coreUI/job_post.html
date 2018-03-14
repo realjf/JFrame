@@ -1,0 +1,87 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <form class="form-horizontal" id="form-postjob">
+                <div class="row-fluid span6">
+                    <div class="control-group">
+                        <label class="control-label">跟进人 :</label>
+                        <div class="controls">
+                            <select id="admin" class="span3">
+                                <option value="">1</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">职位名称 :</label>
+
+                        <div class="controls">
+                            <input type="text" class="span8" id="job_name" placeholder="职位名称" required="true"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">招聘人数</label>
+                        <div class="controls">
+                            <input type="text" placeholder="请输入招聘人数，如：0" class="span8" id="number" required="true"> 人
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid span6">
+                    <div class="control-group">
+                        <label class="control-label">工作地点 :</label>
+
+                        <div class="controls">
+                            <input type="text" class="span8" id="place" placeholder="工作地点" required="true"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">职位类别</label>
+
+                        <div class="controls">
+                            <select id="category" class="span3">
+                                <option>1</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">校招与否 :</label>
+                        <div class="controls">
+                            <label>
+                                <div class="radio"><span><input type="radio" value="1" name="isschool"
+                                                                style="opacity: 0;" checked></span>
+                                </div>
+                                是</label>
+                            <label>
+                                <div class="radio"><span><input type="radio" value="0" name="isschool"
+                                                                style="opacity: 0;"></span>
+                                </div>
+                                否</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">职位描述 :</label>
+
+                    <div class="controls">
+                        <textarea class="textarea_editor1 span11" rows="6" cols="150" placeholder="请输入职位描述内容......" id="duty" required="true"></textarea>
+                        <div>
+                            <button type="button" class="button">加粗</button>
+                        </div>
+                    </div>
+                </div>
+                <div align="center" class="form-actions">
+                    <button type="submit" class="btn btn-success" value="validate">发布新职位</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block pager %}
+{% endblock %}
+{% block page_js %}
+<script src="/res/admin/js/postjob/postjob.js"></script>
+{% endblock %}

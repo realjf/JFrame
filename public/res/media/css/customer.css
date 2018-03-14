@@ -1,0 +1,79 @@
+.container-fluid .row-fluid .portlet{
+	margin-top:10px
+}
+
+.modal-open.page-overflow .page-container,
+.modal-open.page-overflow .page-container .navbar-fixed-top,
+.modal-open.page-overflow .page-container .navbar-fixed-bottom,
+.modal-open.page-overflow .modal-scrollable {
+	overflow-y: auto;
+}
+
+.modal-open .header .container-fluid{
+	padding-right:20px;
+}
+
+/*弹层*/
+.modal.fullScreen {
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    height: 100% !important;
+    overflow:auto;
+}
+
+/*列表搜索*/
+.form-search label{
+    line-height: 32px !important;
+}
+.form-search .checker {
+    margin-top: -6px !important;
+}
+/*标记必填*/
+.label-required {
+    color: #e02222;
+    font-size: 12px;
+    padding-left: 2px;
+}
+/*行鼠标移到高亮*/
+.table-hover tbody tr:hover>td,.table-hover tbody tr:hover>th{
+    background-color:#DCDFF5
+}
+
+.logoContainer.logo120 {
+	margin-right: 16px;
+	width: 120px;
+	position: relative;
+}
+.logoContainer.logo120 img {
+	width: 120px;
+	height: 120px;
+	padding: 3px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+.logoContainer.logo120 img.delShot {
+	width: 13px;
+	height: 14px;
+	position: absolute;
+	right: -7px;
+	top: 0;
+	border: 0px;
+	cursor: pointer;
+}
+
+.logoContainer.width150 img {
+	width: 150px;
+	padding: 3px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+
+table input{
+	max-width: 95% !important;
+}
+
+
+table textarea{
+	max-width: 95% !important;
+}

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>4399应聘登记表</title>
+    <link rel="stylesheet" href="/res/web/css/ks.css">
+    <link rel="stylesheet" href="/res/web/css/style.css" >
+    <!--[if IE 6]>
+    <script src="/res/common/js/pngfilter.js"></script>
+    <script type="text/javascript">DD_belatedPNG.fix('.dx');</script>
+    <![endif]-->
+</head>
+<body>
+
+<script src="/res/common/js/jquery.min.js"></script>
+<script src="/res/common/js/jquery.jqprint.js"></script>
+<div class="comWidth preview ">
+    <div class="comwarp " >
+        <div class="hd " >
+            <div class="logo"><i class="dx"></i></div>
+            <a class="print" id="print" target="_self" href="javascript:void(0)"><i class="i_pre dx"></i>打印</a>
+        </div>
+    </div>
+</div>
+
+<div class="comWidth preview " id="print-content">
+    <div class="comwarp " >
+        <h3>4399应聘登记表</h3>
+        <div class="bd " >
+            <div class="base-info item-box">
+                <p class="mod-hd">基本信息</p>
+                <div class="mod clearfix">
+                    <div class="mod-left">
+                        <p >姓名：<span>{{ res.name}}</span></p>
+                        <p>性别：<span>{{ sexes[res['sex']] }}</span></p>
+                        <p>婚否：<span>{{ marriages[resExt['marital_status']] }}</span></p>
+                        <p>出生日期：<span>{{ resExt['birthdate']|date('Y-m-d') }}</span></p>
+                        <p>身份证号：<span>{{ resExt['id_number'] }}</span></p>
+                        <p>联系电话：<span>{{ res['mobile_phone'] }}</span></p>
+
+                    </div>
+                    <div class="mod-right">
+                        <p>毕业学校：<span>{{ res['school'] }}</span></p>
+                        <p>毕业时间：<span>{{ res['graduation_date'] }}</span></p>
+                        <p>专业：<span>{{ res['major'] }}</span></p>
+                        <p>学历：<span>{{ degrees[res['degree']] }}</span></p>
+                        <p>QQ：<span>{{ res['qq'] }}</span></p>
+                        <p>Email：<span>{{ res['email'] }}</span></p>
+                    </div>
+                </div>
+                <div class="mod clearfix">
+                    <div class="mod-left">
+                        <p>籍贯：<span>{{ resExt['place_birth']|replace({'-':''}) }}</span></p>
+                        <p>户口：<span>{{ resExt['register_place']|replace({'-':''}) }}</span></p>
+                        <p>现居住地：<span>{{ resExt['curr_address']|replace({'-':''}) }}</span></p>
+                    </div>
+                    <div class="mod-right">
+                        <p>紧急联系人：<span>{{ resExt['emerg_contact_person'] }}</span></p>
+                        <p>联系电话：<span>{{ resExt['emerg_contact_phone'] }}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="j_intension item-box">
+                <p class="mod-hd">求职意向</p>
+                <div class="mod clearfix">
+                    <div class="mod-left">
+                        <p>应聘岗位：<span>{{ resExt['job_name'] }}</span></p>
+                        <p>期望薪资：<span>{{ resExt['expected_salary'] }}元/月</span></p>
+                    </div>
+                    <div class="mod-right">
+                        <p>到岗日期：<span>{% if resExt['arrival_date'] > 0 %}{{ resExt['arrival_date']|date('Y-m-d') }}{% endif %}</span></p>
+                        <p>应聘渠道：<span>{{ promotes[resExt['recruitment_channel']] }} {% if resExt['referees'] %}（推荐人：{{ resExt['referees'] }}）{% endif %}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="edu-experience item-box">
+                <p class="mod-hd">教育经历</p>
+                <div class="mod">
+                    <ul>
+                        {% if res['edu_backgnd'] is not empty %}
+                        {% for k,v in res['edu_backgnd'] %}
+                        <li><p>
+                            <span class="date">{{ v['stime'] }} ~ {{ v['graduation'] }}</span>
+                            <span class="other">{{ v['school_name'] }}（{{ eduType[v['type']] }}）</span>
+                            <span class="other">{{ degrees[v['graduate']] }}</span>
+                            <span class="other">{{ v['major'] }}</span>
+                        </p></li>
+                        {% endfor %}
+                        {% else %}
+                        <div class="mod clearfix"><p class="light"><span >暂无</span></p></div>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="work-experience item-box">
+                <p class="mod-hd">工作经历</p>
+                <ul>
+                    {% if res['experience'] is not empty %}
+                    {% for k,v in res['experience'] %}
+                    <li class="mod">
+                        <p>
+                            <span class="date">{{ v['start_date'] }} ~ {{ v['end_date'] }}</span>
+                            {{ v['company'] }}
+                            <span class="pre_gw">岗位：{{ v['job_name'] }}</span>
+                        </p>
+                        <p class="describe">
+                            {{ v['description'] }}
+                        </p>
+                        <div class="clearfix">
+                            <div class="mod-left">
+                                <p>入职薪资：
+                                    <span>{{ v['start_salary'] }}元/月</span>
+                                </p>
+                                <p>离职薪资：
+                                    <span>{{ v['end_salary'] }}元/月</span>
+                                </p>
+                                <p><span></span></p>
+                            </div>
+                            <div class="mod-right">
+                                <p>证明人：
+                                    <span>{{ v['reference'] }}</span>
+                                </p>
+                                <p>联系电话：
+                                    <span>{{ v['refer_phone'] }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="light">离职原因： <br> <span>{{ v['reason_leave'] }}</span>
+                        </p>
+                    </li>
+                    {% endfor %}
+                    {% else %}
+                    <div class="mod clearfix"><p class="light"><span >暂无</span></p></div>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="fam-info item-box">
+                <p class="mod-hd">家庭信息</p>
+                <div class="mod clearfix">
+                    {% if resExt['family'] is not empty %}
+                    {% for k,v in resExt['family'] %}
+                    <div class="mod-{% if k % 2 != 0 %}left{% else %}right{% endif %}">
+                        <p class="light">{{ family[v['identity']] }}：
+                            <span > v['name']</span>
+                        </p>
+                        <p class="light">工作单位：
+                            <span >{{ v['work_unit'] }}</span>
+                        </p>
+                        <p class="light">职位：
+                            <span >{{ v['job'] }}</span>
+                        </p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="mod clearfix"><p class="light"><span >暂无</span></p></div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="others item-box">
+                <p class="mod-hd">其他问题</p>
+                <form class="ks_form ks_formQ">
+                    <div class="ks_item">
+                        <label class="ks_field">是否有朋友或亲属在4399？</label>
+                        <div class="ks_w clearfix ">
+                            <label class="ks_ds"><input type="radio" name="hasin4399" value="1" disabled {% if resExt['other']['friend_inside']==1 %}checked{% endif %}/>有</label>
+                            {% if resExt['other']['friend_inside_name'] %}{{ resExt['other']['friend_inside_name'] }}<label class="ks_dsPlus " >
+                            <input name="hasin4399_name" class="ks_ds_input" type="text" value="{{ resExt['other']['friend_inside_name'] }}" disabled/>(姓名)</label>
+                            {% endif %}
+                            <label class="ks_ds"><input type="radio" name="hasin4399" value="0" disabled {% if resExt['other']['friend_inside']==0 %}checked{% endif %}/>没有</label>
+                        </div>
+                    </div>
+
+                    <div class="ks_item" style="min-height: 55px;">
+                        <label class="ks_field">您是否有来4399面试过？</label>
+                        <div class="ks_w clearfix ">
+                            <label class="ks_ds"><input type="radio" name="hasinterview" value="1" disabled {% if resExt['other']['interview']==1 %}checked{% endif %}/>有</label>
+                            {% if resExt['other']['interview']==1 and resExt['other']['interview_job'] %}
+                            <label class="ks_dsPlus " ><input name="hasinterview_zw" class="ks_ds_input" type="text" value="{{ resExt['other']['interview_job'] }}" disabled/>(职位)
+                                {% if resExt['other']['interview_time'] %}
+                                <input name="hasinterview_zw" class="ks_ds_input" type="text" value="{{ resExt['other']['interview_time'] }}" disabled/>(时间)</label>
+                                {% endif %}
+                            {% endif %}
+                            <label class="ks_ds"><input type="radio" name="hasinterview" value="0" disabled {% if resExt['other']['interview']==0 %}checked{% endif %}/>没有</label>
+                        </div>
+                    </div>
+
+                    <div class="ks_item">
+                        <label class="ks_field">是否曾因为行为不检或表现不佳而遭解雇？</label>
+                        <div class="ks_w clearfix">
+                            <label class="ks_ds"><input type="radio" name="hassack" value="0" disabled {% if resExt['other']['sacked']==0 %}checked{% endif %}/>没有</label>
+                            <label class="ks_ds"><input type="radio" name="hassack" value="1" disabled {% if resExt['other']['sacked']==1 %}checked{% endif %}/>有过</label>
+                        </div>
+                    </div>
+
+                    <div class="ks_item">
+                        <label class="ks_field">是否有任何刑事记录或法律纠纷及治安管理处罚？</label>
+                        <div class="ks_w clearfix">
+                            <label class="ks_ds"><input type="radio" name="hascrime" value="0" disabled {% if resExt['other']['crime']==0 %}checked{% endif %}/>没有</label>
+                            <label class="ks_ds"><input type="radio" name="hascrime" value="1" disabled {% if resExt['other']['crime']==1 %}checked{% endif %}/>有过</label>
+                        </div>
+                    </div>
+
+                    <div class="ks_item">
+                        <label class="ks_field">您是否有推荐的朋友？</label>
+                        <div class="ks_w clearfix" >
+                            <label class="ks_ds"><input type="radio" name="hasfriend" value="1" disabled {% if resExt['other']['recommended']==1 %}checked{% endif %}/>有</label>
+                            <label class="ks_ds"><input type="radio" name="hasfriend" value="0" disabled {% if resExt['other']['recommended']==0 %}checked{% endif %}/>没有</label>
+                        </div>
+                        {% if resExt['other']['recommend_fri'] %}
+                        <div class="friend_list" >
+                            <table class="edu_table" id="j-edu-table">
+                                <tr>
+                                    <td>姓名</td>
+                                    <td>联系方式</td>
+                                    <td>适合岗位</td>
+                                </tr>
+                        {% for k,v in resExt['other']['recommend_fri'] %}
+                                <tr>
+                                    <td>{{ v['name'] }}</td>
+                                    <td>{{ v['contact'] }}</td>
+                                    <td>{{ v['job'] }}</td>
+                                </tr>
+                        {% endfor %}
+                            </table></div>
+                                    {% endif %}
+            </div>
+            </form>
+            <form class="ks_form ks_formQ ">
+                <div class="ks_item">
+                    <label class="ks_field light">您找工作最重要的考虑因素是什么？</label>
+                    <p >{{ resExt['other']['factors']|escape }}</p>
+                </div>
+                <div class="ks_item">
+                    <label class="ks_field light">您怎么看待加班？</label>
+                    <p >{{ resExt['other']['overtime']|escape }}</p>
+                </div>
+                <div class="ks_item">
+                    <label class="ks_field light">你还需要补充的描述？</label>
+                    <p >{{ resExt['hobby']|escape }}</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+    /*打印*/
+    $("#print").click(function(){
+        $("#print-content").jqprint({
+            debug: false,
+            importCSS: true,
+            printContainer: true,
+            operaSupport: true
+        });
+    });
+
+    //单双列不同
+    var itmes=$(".item-box");
+    for ( var i=0;i<itmes.length;i++){
+        if(i%2==0){
+            $(itmes[i]).addClass("odd");
+        }
+    }
+
+</script>
+</body>
+</html>

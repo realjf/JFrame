@@ -47,15 +47,7 @@ class pluginsLoadData
                 ];
                 $obj = new \clsRedis($_config);
             }elseif($type == 'database'){
-                $_dsn = sprintf("mysql:host=%s;dbname=%s;port=%s;",
-                    $config['hostname'],
-                    $config['database'],
-                    $config['port']
-                    );
-                $options = [
-                    'charset'   => $config['charset'] ?: 'utf8',
-                ];
-                $obj = new \clsDatabase($_dsn, $config['username'], $config['password'], $options);
+                $obj = new \clsDatabase($config);
             }else{
                 return FALSE;
             }

@@ -1,0 +1,73 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ pageTitle }}
+            </div>
+            <div class="card-block">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="span1">#</th>
+                        <th class="span2">姓名</th>
+                        <th class="span2">手机号</th>
+                        <th class="span2">学校</th>
+                        <th class="span2">邮箱</th>
+                        <th class="span2">招聘会</th>
+                        <th class="span2">职位</th>
+                        <th class="span2">文件名</th>
+                        <th class="span2">大小(KB)</th>
+                        <th class="span2">上传时间</th>
+                        <th class="span3">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, row in data %}
+                    <tr>
+                        <td>{{ key+1 }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.telephone }}</td>
+                        <td>{{ row.school }}</td>
+                        <td>{{ row.email }} </td>
+                        <td>{% if jobFairs[row.job_fair_id]['title'] is empty %}社会招聘{% else %}{{ jobFairs[row.job_fair_id]['title'] }}{% endif %}</td>
+                        <td>{% if jobNames[row.job_id] is empty %}<label class="label label-default">暂未投递</label>{% else %}{{ jobNames[row.job_id] }}{% endif %}</td>
+                        <td>{{ row.title }}</td>
+                        <td>{{ row.size }}</td>
+                        <td>
+                            {{ row.dateline }}
+                        </td>
+                        <td>
+                            <a class="btn btn-success mini download" data-url="/admin/file-download.html?id={{ row.id }}" href="javascript:void(0);">下载附件</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--/.col-->
+</div>
+
+<!-- END EXAMPLE TABLE PORTLET-->
+{% endblock %}
+
+{% block pager %}
+{% include 'common/pager.html' %}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(function () {
+        $('.download').on('click', function(){
+            var url = $(this).data("url");
+            window.open(url, '_blank');
+        });
+    })
+</script>
+{% endblock %}
+

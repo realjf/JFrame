@@ -1,0 +1,54 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box blue">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-coffee"></i>{{ pageTitle }}</div>
+    </div>
+    <div class="portlet-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="span1">#</th>
+                <th class="span2">标题</th>
+                <th class="span2">描述</th>
+                <th class="span3">连接地址</th>
+                <th class="span2">图片地址</th>
+                <th class="span2">开始时间</th>
+                <th class="span5">结束时间</th>
+                <th class="span2">地区</th>
+                <th class="span2">宣讲地点</th>
+                <th class="span2">招聘会类型</th>
+                <th class="span2">显示状态</th>
+                <th class="span3">更新时间</th>
+                <th class="span3">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, row in data %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td>{{ row.title }}</td>
+                <td>{{ row.desc }}</td>
+                <td>{{ row.url }}</td>
+                <td>{{ row.pic_url }} </td>
+                <td>{{ row.stime }}</td>
+                <td>{{ row.etime }}</td>
+                <td>{{ row.zone }}</td>
+                <td>{{ row.place }}</td>
+                <td>{% if row.type==1 %}校园招聘 {% else %}社会招聘{% endif %}</td>
+                <td>{% if row.show == 1 %}<label class="label label-success">显示</label>{% else %}<label class="label">隐藏</label>{% endif %}</td>
+                <td>{{ row.dateline|date('Y-m-d H:i:s') }}</td>
+                <td>
+
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- END EXAMPLE TABLE PORTLET-->
+{% endblock %}

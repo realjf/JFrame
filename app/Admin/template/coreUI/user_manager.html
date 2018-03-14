@@ -1,0 +1,89 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ pageTitle }}
+                <div class="btn-group pull-right">
+                    <a class="btn btn-success mini dialogDo" href="javascript:void(0);"  data-container="container" data-href="/admin/user-edit.html">新增</a>
+                </div>
+            </div>
+            <div class="card-block">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>管理员名称</th>
+                        <th>邮箱</th>
+                        <th>最近登录ip</th>
+                        <th>最近登录时间</th>
+                        <th>账号类型</th>
+                        <th>账号状态</th>
+                        <th>创建时间</th>
+                        <th class="span5">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, row in data %}
+                    <tr>
+                        <td>{{ key+1 }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.email }}</td>
+                        <td>{{ row.last_login_ip }}</td>
+                        <td>{{ row.last_login_time }} </td>
+                        <td>{% if row.type==1 %}<label class="label label-important">超管</label>{% else %}<label class="label label-success">普通</label>{% endif %}</td>
+                        <td>{% if row.status==1 %}
+                            <label class="label label-success">正常</label>
+                            {% elseif row.status==2 %}
+                            <label class="label label-inverse">待审核</label>
+                            {% elseif row.status==3 %}
+                            <label class="label label-important">审核拒绝</label>
+                            {% else %}
+                            <label class="label label-default">弃用</label>{% endif %}</td>
+                        <td>{{ row.ctime }}</td>
+                        <td>
+                            {% if isSuper==1 %}
+                            {% if row.type!=1 %}
+                            {% if row.status==3 %}
+                            <a class="btn btn-success mini ajaxDo" href="javascript:void(0);" data-href="/admin/user-op.html?id={{ row.id }}&status=1">审核通过</a>
+                            {% elseif row.status==2 %}
+                            <a class="btn btn-success mini ajaxDo" data-refresh="true" href="javascript:void(0);" data-href="/admin/user-op.html?id={{ row.id }}&status=1">审核通过</a>
+                            <a class="btn btn-danger mini ajaxDo" data-refresh="true" href="javascript:void(0);" data-href="/admin/user-op.html?id={{ row.id }}&status=3">审核拒绝</a>
+                            {% elseif row.status==1 %}
+                            <a class="btn btn-inverse mini ajaxDo" data-refresh="true" href="javascript:void(0);" data-href="/admin/user-op.html?id={{ row.id }}&status=0">弃用</a>
+                            {% else %}
+                            <a class="btn btn-info mini ajaxDo" data-refresh="true" href="javascript:void(0);" data-href="/admin/user-op.html?id={{ row.id }}&status=1">启用</a>
+                            {% endif %}
+                            {% endif %}
+                            {% endif %}
+                            {% if uid > 0 and uid==row.id %}
+                            <a class="btn btn-info mini dialogDo" href="javascript:void(0);" data-container="container" data-href="/admin/user-edit.html?id={{ row.id }}" >编辑</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--/.col-->
+</div>
+
+<!-- END EXAMPLE TABLE PORTLET-->
+
+{% endblock %}
+{% block pager %}
+{% include 'common/pager.html' %}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(function () {
+    })
+</script>
+{% endblock %}
+

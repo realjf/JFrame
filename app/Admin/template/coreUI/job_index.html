@@ -1,0 +1,167 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ pageTitle }}
+                <div class="btn-group pull-right">
+                    <a class="btn btn-success mini dialogDo" href="javascript:void(0);"  data-container="container" data-href="/admin/job-edit.html">新增</a>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="row-fluid search-forms search-default">
+                    <form action="/admin/job-index.html" method="GET" class="form-search ajax-form">
+                            <label class="control-label">跟进人：
+                                <select name="search[follow]">
+                                    <option value="">全部</option>
+                                    {% for k,v in follows %}
+                                    <option value="{{ k }}" {% if k==searchCond.follow %}selected{% endif %}>{{ v }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <label class="control-label">职位类别：
+                                <select name="search[category]">
+                                    {% for k,v in categories %}
+                                    <option value="{{ k }}" {% if k==searchCond.category %}selected{% endif %}>{{ v }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <label class="control-label">职位状态：
+                                <select name="search[pub_status]">
+                                    <option value="">全部</option>
+                                    <option value="1" {% if 1==searchCond.pub_status %}selected{% endif %}>已下架</option>
+                                    <option value="2" {% if 2==searchCond.pub_status %}selected{% endif %}>已发布</option>
+                                </select>
+                            </label>
+                            <button class="btn btn-success " type="submit">搜索 &nbsp;<i class="icon-arrow-right-circle m-icon-white"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered table-hover data-table table-striped with-check">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" name="title-table-checkbox"/></th>
+                        <th class="span1">#</th>
+                        <th class="span5">职位名称</th>
+                        <th class="span2">职位类别</th>
+                        <th class="span2">招聘人数</th>
+                        <th class="span3">跟进人</th>
+                        <th class="span2">职位状态</th>
+                        <th class="span3">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, row in data1 %}
+                    <tr>
+                        <td><input type="checkbox" id="{{ row.id }}"/></td>
+                        <td>{{ key+1 }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.category }}</td>
+                        <td>{{ row.number }}</td>
+                        <td>
+                            {{ follows[row.follow] }}
+                        </td>
+                        <td>
+                            {% if row.pub_status==2 %}<label class="label label-success">已发布</label>{% else %}<label class="label">已下架</label>{% endif %}
+                        </td>
+                        <td>
+                            {% if row.pub_status==2 %}
+                            <a class="btn btn-danger mini ajaxDo" title="确认下架？" data-refresh="true" data-href="/admin/job-op.html?action=publish&status=1&id={{ row.id }}" href="javascript:void(0);">下架</a>
+                            {% else %}
+                            <a class="btn btn-success mini ajaxDo" title="确认发布？" data-refresh="true" data-href="/admin/job-op.html?action=publish&status=2&id={{ row.id }}" href="javascript:void(0);">发布</a>
+                            {% endif %}
+                            <a class="btn btn-info mini dialogDo"  data-container="container" href="javascript:void(0);" data-href="/admin/job-edit.html?id={{ row.id }}">编辑</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--/.col-->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-block">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="span1">#</th>
+                        <th class="span5">职位名称</th>
+                        <th class="span2">职位类别</th>
+                        <th class="span2">招聘人数</th>
+                        <th class="span3">跟进人</th>
+                        <th class="span2">职位状态</th>
+                        <th class="span3">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, row in data2 %}
+                    <tr>
+                        <td>{{ key+1 }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.category }}</td>
+                        <td>{{ row.number }}</td>
+                        <td></td>
+                        <td>
+                            {% if row.pub_status==2 %}<label class="label label-success">已发布</label>{% else %}<label class="label">已下架</label>{% endif %}
+                        </td>
+                        <td>
+                            {% if row.pub_status==2 %}
+                            <a class="btn btn-danger mini ajaxDo" title="确认下架？" data-refresh="true" data-href="/admin/job-op.html?action=publish&status=1&id={{ row.id }}" href="javascript:void(0);">下架</a>
+                            {% else %}
+                            <a class="btn btn-success mini ajaxDo" title="确认发布？" data-refresh="true" data-href="/admin/job-op.html?action=publish&status=2&id={{ row.id }}" href="javascript:void(0);">发布</a>
+                            {% endif %}
+                            <a class="btn btn-info mini dialogDo" data-container="container" href="javascript:void(0);" data-href="/admin/job-edit.html?id={{ row.id }}">编辑</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END EXAMPLE TABLE PORTLET-->
+{% endblock %}
+{% block pager %}
+{% include 'common/pager.html' %}
+{% endblock %}
+
+{% block page_js %}
+<script src="/res/media/js/wysihtml5-0.3.0.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(function () {
+        $("#btn-multi-release").on('click', function(){
+            var ids = [];
+            $(":checkbox:checked", ".table").each(function(){
+                var id = $(this).parents("tr").find("input:checkbox").attr("id");
+                if(id){
+                    ids.push(id);
+                }
+            });
+            $.ajax({
+                url: '/admin/job-op.html?action=publish&_AJAX_=' + Math.random(),
+                dataType: 'json',
+                type: 'post',
+                data: {ids:ids.toString(),status:2},
+                success: function (res) {
+                    UIModals.tips(res.code, res.message);
+                }
+            });
+        });
+    })
+</script>
+{% endblock %}

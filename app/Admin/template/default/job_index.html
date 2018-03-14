@@ -1,0 +1,88 @@
+{% extends "common/base.html" %}
+
+{% block page_content %}
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box blue">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-coffee"></i>{{ pageTitle }}</div>
+    </div>
+    <div class="portlet-body" style="padding: 0;">
+        <div class="span6">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="span1">#</th>
+                    <th class="span5">职位名称</th>
+                    <th class="span2">职位类别</th>
+                    <th class="span2">招聘人数</th>
+                    <th class="span3">跟进人</th>
+                    <th class="span2">职位状态</th>
+                    <th class="span3">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, row in data1 %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.category }}</td>
+                    <td>{{ row.number }}</td>
+                    <td></td>
+                    <td>
+                        {% if row.pub_status==2 %}<label class="label label-success">已发布</label>{% else %}<label class="label">已下架</label>{% endif %}
+                    </td>
+                    <td>
+                        {% if row.pub_status==2 %}
+                        <a class="btn mini" href="">下架</a>
+                        {% else %}
+                        <a class="btn mini red" href="">发布</a>
+                        {% endif %}
+                        <a class="btn btn-info mini blue" href="">编辑</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="span6">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="span1">#</th>
+                    <th class="span5">职位名称</th>
+                    <th class="span2">职位类别</th>
+                    <th class="span2">招聘人数</th>
+                    <th class="span3">跟进人</th>
+                    <th class="span2">职位状态</th>
+                    <th class="span3">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, row in data2 %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.category }}</td>
+                    <td>{{ row.number }}</td>
+                    <td></td>
+                    <td>
+                        {% if row.pub_status==2 %}<label class="label label-success">已发布</label>{% else %}<label class="label">已下架</label>{% endif %}
+                    </td>
+                    <td>
+                        {% if row.pub_status==2 %}
+                        <a class="btn btn-danger mini red" href="">下架</a>
+                        {% else %}
+                        <a class="btn btn-danger mini red" href="">发布</a>
+                        {% endif %}
+                        <a class="btn btn-info mini blue" href="">编辑</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- END EXAMPLE TABLE PORTLET-->
+{% endblock %}

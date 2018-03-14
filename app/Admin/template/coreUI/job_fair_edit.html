@@ -1,0 +1,109 @@
+<div class="modal-header">
+    <h3>{% if data is not empty %}编辑{% else %}新增 {% endif %}</h3>
+    <button type="button" class="close" data-dismiss="modal" auto-close="true">&nbsp;</button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-block">
+                    <form action="/admin/job-fairEdit.html?action=save" class="form-horizontal ajax-form" method="post">
+                        <input type="hidden" name="id" value="{{ data.id }}">
+                        <div class="control-group">
+                            <label class="control-label">标题：<span class="label-required">*</span></label>
+                            <div class="controls">
+                                <input type="text" value="{{ data.title }}" name="title"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图片地址：</label>
+                            <div class="controls">
+                                <input type="text" value="{{ data.pic_url }}" name="pic_url"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">连接地址：</label>
+                            <div class="controls">
+                                <input type="password"  value="{{ data.url }}" name="url"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">描述：</label>
+                            <div class="controls">
+                                <textarea name="desc" id="job_fair_desc">{{ data.desc }}</textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">地区：<span class="label-required">*</span></label>
+                            <div class="controls">
+                                <input type="text" value="{{ data.zone }}" name="zone"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">宣讲地点：</label>
+                            <div class="controls">
+                                <input type="text" value="{{ data.place }}" name="place"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">排序值：</label>
+                            <div class="controls">
+                                <input type="text" value="{{ data.sort }}" name="sort"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">招聘会类型：<span class="label-required">*</span></label>
+                            <div class="controls">
+                                <input name="type" type="radio" class="input-mini mini" value="1" {% if data.type==1 %}checked{% endif %}>校园招聘
+                                <input name="type" type="radio" class="input-mini mini" value="0" {% if data.type==0 %}checked{% endif %}>社会招聘
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">显示：<span class="label-required">*</span></label>
+                            <div class="controls">
+                                <input name="show" type="radio" class="input-mini mini" value="1" {% if data.show==1 %}checked{% endif %}>显示
+                                <input name="show" type="radio" class="input-mini mini" value="0" {% if data.show==0 %}checked{% endif %}>隐藏
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">开始时间：</label>
+                            <div class="controls">
+                                <input type="text" name="stime" id="stime-picker"  value="{% if data.stime > 0 %}{{ data.stime|date('Y-m-d H:i') }}{% endif %}"/>
+                                <input type="button" id="reset_stime" value="重置" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">结束时间：</label>
+                            <div class="controls">
+                                <input type="text" name="etime" id="etime-picker" value="{% if data.stime > 0 %}{{ data.etime|date('Y-m-d H:i') }}{% endif %}"/>
+                                <input type="button" id="reset_etime" value="重置" />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn blue submitDo" data-refresh="true" >提交</button>
+                            <button type="button" data-dismiss="modal" class="btn">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            Editor.basic('job_fair_desc');
+
+            $('#stime-picker').datetimepicker();
+            $('#etime-picker').datetimepicker();
+
+            $('#reset_stime').on('click', function(){
+                $('#stime-picker').val('');
+            });
+
+            $('#reset_etime').on('click', function(){
+                $('#etime-picker').val('');
+            });
+
+        })
+    </script>
+</div>
+
