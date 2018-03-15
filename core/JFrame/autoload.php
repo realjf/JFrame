@@ -16,6 +16,8 @@ class autoload
         $module = isset($classArr[1]) ? $classArr[1] : "";
         if($prefix == 'cls'){
             $dir = JFRAME_LIBRARY_PATH . '/';
+        }elseif($prefix == 'def'){
+            $dir = JFRAME_DEF_PATH . '/';
         }else{
             switch(strtolower($classArr[0])){
                 case "core":

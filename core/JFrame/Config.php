@@ -26,10 +26,12 @@ class Config extends BaseClass
     /**
      * 读取配置，支持嵌套key
      * @param $key
+     * @param $default
      * @return mixed|null
      */
-    public function read($key)
+    public function read($key, $default = 'default')
     {
-        return self::$_config->get($key);
+        $data = self::$_config->get($key);
+        return $data ?: $default;
     }
 }

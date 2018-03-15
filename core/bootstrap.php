@@ -19,7 +19,7 @@ if(SYS_IS_ONLINE){
     try{
         $JFrame->run();
     }catch (Exception $e){
-        echo("system error!");
+        echo("999:system error!");
         exit();
     }
 }else{

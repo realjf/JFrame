@@ -18,9 +18,17 @@ class JFrame
         if(class_exists($class)){
             $controller = new $class();
             $method = "func" . ucfirst($router['method']);
-            $controller->setOptions($router);
-            $controller->$method();
+            if(method_exists($class, $method)){
+                $controller->setOptions($router);
+                $controller->$method();
+            }else{
+                // 方法不存在
+                $router['uri'] = str_ireplace($router['method'], "index", $router['uri']);
+                $router['method'] = 'index';
+                \clsTools::redirect($router['uri']);
+            }
         }else{
+            // 类不存在
 
         }
     }
