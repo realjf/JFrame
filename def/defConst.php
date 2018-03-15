@@ -160,7 +160,7 @@ class defConst
     ];
 
     /**
-     * 审核进程状态
+     * 简历进程显示状态
      * @var array
      */
     public static $auditProcessStatus = [

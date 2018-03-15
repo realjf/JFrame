@@ -1,5 +1,6 @@
 <?php
 /**
+ * web简历表操作
  * Created by PhpStorm.
  * User: 4399-3046
  * Date: 2018/3/9
@@ -36,6 +37,7 @@ class mdlResumeWebOp extends mdlBase
      * @var string
      */
     private static $_tb_delivery_log = 'resume_deliver_log';
+
 
     /**
      * 获取简历
@@ -179,7 +181,7 @@ class mdlResumeWebOp extends mdlBase
         $uData = [];
         if(isset($data['job_id']) && $data['job_id']){
             $uData['job_id'] = intval($data['job_id']);
-            mdlResumeOP::instance()->updateDeliverLogByRid($resumeId, $uid, $data['job_id']);
+            mdlResumeOp::instance()->updateDeliverLogByRid($resumeId, $uid, $data['job_id']);
         }
         if(isset($data['salary']) && $data['salary']){
             $uData['expected_salary'] = intval($data['salary']);

@@ -8,7 +8,7 @@
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> {{ pageTitle }}
                 <div class="btn-group pull-right">
-                    <a class="btn btn-success mini dialogDo" href="javascript:void(0);"  data-container="container" data-href="/admin/job-fairEdit.html">新增</a>
+                    <a class="btn btn-success mini dialogDo" href="javascript:void(0);"  data-container="container" data-href="/admin/fair-edit.html">新增</a>
                 </div>
             </div>
             <div class="card-block">
@@ -43,11 +43,11 @@
                         <td>{{ row.dateline|date('Y-m-d H:i:s') }}</td>
                         <td>
                             {% if row.show == 1 %}
-                            <a class="btn mini ajaxDo" data-refresh="true"  href="javascript:void(0);" data-href="/admin/job-show.html?id={{ row.id }}&status=0" title="确认隐藏？">隐藏</a>
+                            <a class="btn mini ajaxDo" data-refresh="true"  href="javascript:void(0);" data-href="/admin/fair-show.html?id={{ row.id }}&status=0" title="确认隐藏？">隐藏</a>
                             {% else %}
-                            <a class="btn mini btn-success ajaxDo" data-refresh="true" href="javascript:void(0);" data-href="/admin/job-show.html?id={{ row.id }}&status=1" title="确认显示？">显示</a>
+                            <a class="btn mini btn-success ajaxDo" data-refresh="true" href="javascript:void(0);" data-href="/admin/fair-show.html?id={{ row.id }}&status=1" title="确认显示？">显示</a>
                             {% endif %}
-                            <a class="btn mini btn-info dialogDo"  data-container="container" data-refresh="true" href="javascript:void(0);" data-href="/admin/job-fairEdit.html?id={{ row.id }}">编辑</a>
+                            <a class="btn mini btn-info dialogDo"  data-container="container" data-refresh="true" href="javascript:void(0);" data-href="/admin/fair-edit.html?id={{ row.id }}">编辑</a>
                         </td>
                     </tr>
                     {% endfor %}

@@ -1,5 +1,6 @@
 <?php
 /**
+ * 用户简历信息操作
  * Created by PhpStorm.
  * User: 4399-3046
  * Date: 2018/3/6
@@ -440,5 +441,18 @@ class mdlResumeOp extends mdlBase
             }
         }
         return $data;
+    }
+
+    /**
+     * @param $name
+     * @return array|bool
+     */
+    public function fetchByName($name)
+    {
+        if(!$name){
+            return false;
+        }
+        $cond['name'] = $name;
+        return $this->dbAdmin()->fetch(self::TABLE_RESUME_LIBRARY, '*', $cond);
     }
 }

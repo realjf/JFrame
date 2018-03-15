@@ -84,6 +84,7 @@ class ctlJob extends ctlBase
             if(!$data['j_name'] || !$data['j_number'] || !$data['j_duty'] || !$data['j_place'] || !$data['j_category']){
                 $this->output('101:缺少信息');
             }
+
             $res = mdlJob::instance()->updateJobById($id, $data);
             if($res === FALSE){
                 $this->output('99:保存失败');

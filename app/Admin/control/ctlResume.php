@@ -20,10 +20,11 @@ class ctlResume extends ctlBase
         $page = \clsVars::get('p')->toInt(1, 1);
         $cond = $this->_getFilter();
         $data = mdlResumeOp::instance()->getDeliverLogList($cond, $page, $this->defaultPerPage);
-        $jobs = $users = $resumeAttaches = [];
+        $jobs = $users = $resumeAttaches = $jobCategory = [];
         if($data['data']){
-            $rIds = \clsTools::mkKey($data['data'], 'job_id', true);
-            $jobs = mdlJob::instance()->getJobNameById($rIds);
+            $jobIds = \clsTools::mkKey($data['data'], 'job_id', true);
+            $jobs = mdlJob::instance()->getJobNameById($jobIds);
+            $jobCategory = mdlJob::instance()->getJobCategoryByIds($jobIds);
             $uids = \clsTools::mkKey($data['data'], 'uid', true);
             $users = mdlResumeOp::instance()->getResumeByUids($uids);
             $resumeAttaches = mdlResumeFile::instance()->getByUid($uids);
@@ -56,6 +57,7 @@ class ctlResume extends ctlBase
             'data' => $data['data'],
             'jobs' => $jobs,
             'users' => $users,
+            'jobCategory' => $jobCategory,
             'attaches' => $resumeAttaches,
             'follows' => $follows,
             'categories' => $categories ? json_encode($categories, JSON_UNESCAPED_UNICODE) : '',
@@ -81,11 +83,20 @@ class ctlResume extends ctlBase
             $oldCategory[] = intval($search['category']);
         }
         $this->assign('oldCategory', json_encode($oldCategory, JSON_UNESCAPED_UNICODE));
+        if($search['name']){
+            $cond[] = "j_name like '%" . trim(\clsTools::slashes($search['name'])) . "%'";
+        }
         $searchCond = [];
         if($cond){
             $jobs = mdlJob::instance()->fetchByCond($cond);
             $jobIds = \clsTools::mkKey($jobs, 'id', true);
             $searchCond = ['job_id in(' . implode(',', $jobIds) . ')'];
+        }
+        // 用户名搜索
+        if($search['username']){
+            $users = mdlResumeOp::instance()->fetchByName(\clsTools::slashes($search['username']));
+            $uids = \clsTools::mkKey($users, 'uid', true);
+            $searchCond[] = "uid in(" . implode(',', $uids) . ")";
         }
         if($search['stime']){
             $search['stime'] = strtotime($search['stime']);
@@ -118,7 +129,7 @@ class ctlResume extends ctlBase
         $id = \clsVars::get('id')->toInt();
         $status = \clsVars::get('status')->toInt();
         if($id){
-            $data = mdlResumeOP::instance()->getDeliverLogById($id);
+            $data = mdlResumeOp::instance()->getDeliverLogById($id);
             if(!$data['remarks']){
                 $status = intval($data['status']);
                 $data['remarks'] = \defConst::$_remarks[$status];
@@ -139,6 +150,9 @@ class ctlResume extends ctlBase
         $this->display('resume_edit.html');
     }
 
+    /**
+     * 删除简历
+     */
     public function funcDelete()
     {
         $this->needLogin();
@@ -146,7 +160,6 @@ class ctlResume extends ctlBase
         if(!$id){
             $this->output('101:缺少参数');
         }
-
-
+        // 1. 删除用户
     }
 }

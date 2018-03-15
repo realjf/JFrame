@@ -36,10 +36,16 @@
                         </label>
                         <label class="control-label">简历状态：
                             <select name="search[status]">
+                                <option value="-1" selected>全部</option>
                                 {% for k,v in applyStatus %}
+                                {% if k < 4 %}
                                 <option value="{{ k }}" {% if k==searchCond.status %}selected{% endif %}>{{ v }}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
+                        </label>
+                        <label class="control-label">职位名称：
+                            <input type="text" placeholder="支持模糊搜索" name="search[name]" style="height: 30px;" value="{{ searchCond.name }}">
                         </label>
                         <button class="btn btn-success " type="submit">搜索 &nbsp;<i class="icon-arrow-right-circle m-icon-white"></i></button>
                     </form>
@@ -53,7 +59,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th class="span1">#</th>
                         <th>姓名</th>
                         <th>职位</th>
                         <th>电话</th>
@@ -75,7 +81,7 @@
                     <tr class="resume-record" data-query="id={{ row.resume_id }}&uid={{ row.uid }}">
                         <td>{{ key+1 }}</td>
                         <td>{{ users[row.uid]['name'] }}</td>
-                        <td>{{ jobs[row.job_id] }}</td>
+                        <td title="职位类别：{{ jobCategory[row.job_id]['category'] }}">{{ jobs[row.job_id] }}</td>
                         <td>{{ users[row.uid]['phone'] }}</td>
                         <td>{{ users[row.uid]['sex'] }}</td>
                         <td>{{ users[row.uid]['degree'] }}</td>
@@ -84,8 +90,8 @@
                         <td>{{ users[row.uid]['graduation_date'] }}</td>
                         <td>{{ users[row.uid]['email'] }}</td>
                         <td>{% if row.from==1 %}官网{% else %}微信招聘{% endif %}</td>
-                        <td>
-                            <label class="label {% if row.status < 0 %}label-inverse{% elseif row.status==4 %}label-important{% else %}label-info{% endif %}">{{ statuses[row.status] }}</label>
+                        <td title="{{ row.remarks|striptags }}">
+                            <label class="label {% if row.status < 0 %}label-inverse{% elseif row.status==4 or row.status==5 %}label-important{% else %}label-info{% endif %}">{{ statuses[row.status] }}</label>
                         </td>
                         <td>{{ row.dateline|date('Y-m-d H:i:s') }}</td>
                         <td>
@@ -94,9 +100,11 @@
                             {% endif %}
                         </td>
                         <td>
+                            {% if row.status <= 3 %}
                             <a class="btn btn-success mini dialogDo" data-container="container" data-href="/admin/recruit-op.html?action=pass&id={{ row.id }}&status={% if row.status > 0 %}{{ row.status+1 }}{% else %}{{ row.status+2 }}{% endif %}" href="javascript:void(0);">
                                 {% if row.status > 0 %}{{ applyStatus[row.status+1] }}{% else %}{{ applyStatus[row.status+2] }}{% endif %}
                             </a>
+                            {% endif %}
                             <a class="btn btn-danger mini dialogDo" data-container="container" data-href="/admin/recruit-op.html?action=reject&id={{ row.id }}" href="javascript:void(0);">淘汰</a>
                         </td>
                     </tr>
@@ -118,9 +126,8 @@
 <script type="text/javascript">
     $(function () {
         $('.download').on('click', function(e){
-            // e.stopPropagation();
             var url = $(this).data("url");
-            Http.confirm(url, '您确定要下载本附件吗');
+            window.open(url, '_blank');
         });
         $('.resume-record').on('click', function (e) {
             if(!$(e.target).hasClass('btn')){

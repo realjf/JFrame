@@ -60,7 +60,7 @@
                             {% endif %}
                             {% endif %}
                             {% if uid > 0 and uid==row.id %}
-                            <a class="btn btn-info mini dialogDo" href="javascript:void(0);" data-container="container" data-href="/admin/user-edit.html?id={{ row.id }}" >编辑</a>
+                            <a class="btn btn-info mini dialogDo" href="javascript:void(0);" data-container="container" data-refresh="true" data-href="/admin/user-edit.html?id={{ row.id }}" >编辑</a>
                             {% endif %}
                         </td>
                     </tr>

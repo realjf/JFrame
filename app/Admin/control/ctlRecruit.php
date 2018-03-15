@@ -20,10 +20,11 @@ class ctlRecruit extends ctlBase
         $page = \clsVars::get('p')->toInt(1, 1);
         $cond = $this->_getSearchCond();
         $data = mdlResumeOp::instance()->getDeliverLogList($cond, $page, $this->defaultPerPage);
-        $jobs = $users = $resumeAttaches = [];
+        $jobs = $users = $resumeAttaches = $jobCategory =[];
         if($data['data']){
             $jobIds = \clsTools::mkKey($data['data'], 'job_id', true);
             $jobs = mdlJob::instance()->getJobNameById($jobIds);
+            $jobCategory = mdlJob::instance()->getJobCategoryByIds($jobIds);
             $uids = \clsTools::mkKey($data['data'], 'uid', true);
             $users = mdlResumeOp::instance()->getResumeByUids($uids);
             $resumeAttaches = mdlResumeFile::instance()->getByUid($uids);
@@ -36,6 +37,7 @@ class ctlRecruit extends ctlBase
             'data' => $data['data'],
             'jobs' => $jobs,
             'users' => $users,
+            'jobCategory' => $jobCategory,
             'attaches' => $resumeAttaches,
             'follows' => $follows,
             'categories' => \defConst::$_category,
@@ -58,6 +60,9 @@ class ctlRecruit extends ctlBase
         if($search['category']){
             $cond['j_category'] = intval($search['category']);
         }
+        if($search['name']){
+            $cond[] = "j_name like '%" . trim(\clsTools::slashes($search['name'])) . "%'";
+        }
         $searchCond = [];
         if($cond){
             $jobs = mdlJob::instance()->fetchByCond($cond);
@@ -65,8 +70,8 @@ class ctlRecruit extends ctlBase
             $searchCond = ['job_id in(' . implode(',', $jobIds) . ')'];
         }
         // 过滤出进程中简历
-        if(isset($search['status'])){
-            if($search['status'] == 0 || $search['status'] == 1){ // 0新简历和1待沟通做相同处理
+        if($search['status'] > 0){
+            if($search['status'] == 1){ // 0新简历和1待沟通做相同处理
                 $searchCond[] = "status in(0,1)";
             }else{
                 $searchCond['status'] = intval($search['status']);
@@ -96,17 +101,17 @@ class ctlRecruit extends ctlBase
             $id = \clsVars::get('id')->toInt(0);
             $uid = \clsVars::get('uid')->toInt(0);
             if ($id && $uid) {
-                $res = mdlResumeWebOP::instance()->getSnapshot($id, $uid);
+                $res = mdlResumeWebOp::instance()->getSnapshot($id, $uid);
                 if ($res) {
                     $res['experience'] = json_decode($res['experience'], true);
                     $res['edu_backgnd'] = json_decode($res['edu_backgnd'], true);
                     $res['graduation_date'] = date('Y-m', $res['graduation_date']);
                 }
-                $resExt = mdlResumeWebOP::instance()->getSnapshotExt($id, $uid);
+                $resExt = mdlResumeWebOp::instance()->getSnapshotExt($id, $uid);
                 if ($resExt && $resExt['job_id']) {
                     $jobId = $resExt['job_id'];
                 } else {
-                    $jobIds = mdlResumeOP::instance()->getDeliverLogByUid($uid);
+                    $jobIds = mdlResumeOp::instance()->getDeliverLogByUid($uid);
                     $jobId = "";
                     foreach ($jobIds as $v) {
                         if ($v['resume_id'] == $id) {
@@ -178,7 +183,7 @@ class ctlRecruit extends ctlBase
             }
             // 保存入库
             $data['remarks'] = \clsTools::nl2br($data['remarks']);
-            $res = mdlResumeOP::instance()->updateDeliverLogById($id, $data);
+            $res = mdlResumeOp::instance()->updateDeliverLogById($id, $data);
             if($res !== FALSE){
                 $this->output('100:保存成功');
             }else{

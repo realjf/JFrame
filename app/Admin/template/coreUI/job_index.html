@@ -36,6 +36,9 @@
                                     <option value="2" {% if 2==searchCond.pub_status %}selected{% endif %}>已发布</option>
                                 </select>
                             </label>
+                            <label class="control-label">职位名称：
+                                <input type="text" placeholder="支持模糊搜索" name="search[name]" style="height: 30px;" value="{{ searchCond.name }}">
+                            </label>
                             <button class="btn btn-success " type="submit">搜索 &nbsp;<i class="icon-arrow-right-circle m-icon-white"></i></button>
                     </form>
                 </div>
@@ -48,8 +51,8 @@
                 <table class="table table-bordered table-hover data-table table-striped with-check">
                     <thead>
                     <tr>
-                        <th><input type="checkbox" name="title-table-checkbox"/></th>
-                        <th class="span1">#</th>
+                        <!--<th><input type="checkbox" name="title-table-checkbox"/></th>-->
+                        <th class="span2">#</th>
                         <th class="span5">职位名称</th>
                         <th class="span2">职位类别</th>
                         <th class="span2">招聘人数</th>
@@ -61,7 +64,7 @@
                     <tbody>
                     {% for key, row in data1 %}
                     <tr>
-                        <td><input type="checkbox" id="{{ row.id }}"/></td>
+                        <!--<td><input type="checkbox" id="{{ row.id }}"/></td>-->
                         <td>{{ key+1 }}</td>
                         <td>{{ row.name }}</td>
                         <td>{{ row.category }}</td>
@@ -94,7 +97,7 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th class="span1">#</th>
+                        <th class="span2">#</th>
                         <th class="span5">职位名称</th>
                         <th class="span2">职位类别</th>
                         <th class="span2">招聘人数</th>

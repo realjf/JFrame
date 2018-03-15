@@ -1183,9 +1183,9 @@
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
-								'<th class="prev"><i class="icon-angle-left"/></th>'+
-								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next"><i class="icon-angle-right"/></th>'+
+								'<th class="prev"><i class="icon-angle-left icon-arrow-left"/></th>'+
+								'<th colspan="5" class="datepicker-switch "></th>'+
+								'<th class="next"><i class="icon-angle-right icon-arrow-right"/></th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',

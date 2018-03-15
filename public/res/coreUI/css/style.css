@@ -8913,3 +8913,15 @@ div.radio, div.radio span, div.radio input{
   line-height: 32px;
 }
 
+.range_inputs label {
+  display: block;
+}
+
+input.m-wrap.input-mini {
+  width: 120px;
+}
+
+.range_inputs div {
+  padding-left: 0!important;
+}
+

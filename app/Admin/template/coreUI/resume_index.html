@@ -36,14 +36,20 @@
                             </select>
                         </label>
 
-                        <label class="control-label">时间段：
+                        <label class="control-label">投递时间：
                             <div id="form-date-range" class="btn btn-mini">
                                 <i class="icon-calendar"></i>
-                                &nbsp;<span>{{ searchCond.stime|date('Y-m-d') }} - {{ searchCond.etime|date('Y-m-d') }}</span>
+                                &nbsp;<span>{% if searchCond.stime %}{{ searchCond.stime|date('Y-m-d') }}{% endif %} - {% if searchCond.etime %}{{ searchCond.etime|date('Y-m-d') }}{% endif %}</span>
                                 <b class="caret"></b>
                             </div>&nbsp;
-                            <input type="hidden" name="search[stime]" class="start" value="{{ searchCond.stime|date('Y-m-d') }}">
-                            <input type="hidden" name="search[etime]" class="end" value="{{ searchCond.etime|date('Y-m-d') }}">
+                            <input type="hidden" name="search[stime]" class="start" value="{% if searchCond.stime %}{{ searchCond.stime|date('Y-m-d') }}{% endif %}">
+                            <input type="hidden" name="search[etime]" class="end" value="{% if searchCond.etime %}{{ searchCond.etime|date('Y-m-d') }}{% endif %}">
+                        </label>
+                        <label class="control-label">职位名称：
+                            <input type="text" placeholder="模糊搜索" name="search[name]" style="height: 30px;" value="{{ searchCond.name }}">
+                        </label>
+                        <label class="control-label">姓名：
+                            <input type="text" placeholder="精确匹配" name="search[username]" style="height: 30px;" value="{{ searchCond.username }}">
                         </label>
                         <button class="btn btn-success " type="submit">筛选 &nbsp;<i class="icon-arrow-right-circle m-icon-white"></i></button>
                     </form>
@@ -78,7 +84,7 @@
                     <tr class="resume-record" data-query="id={{ row.resume_id }}&uid={{ row.uid }}">
                         <td>{{ key+1 }}</td>
                         <td>{{ users[row.uid]['name'] }}</td>
-                        <td>{{ jobs[row.job_id] }}</td>
+                        <td  title="职位类别：{{ jobCategory[row.job_id]['category'] }}">{{ jobs[row.job_id] }}</td>
                         <td>{{ users[row.uid]['phone'] }}</td>
                         <td>{{ users[row.uid]['sex'] }}</td>
                         <td>{{ users[row.uid]['degree'] }}</td>
@@ -88,7 +94,7 @@
                         <td>{{ users[row.uid]['email'] }}</td>
                         <td>{% if row.from==1 %}官网{% else %}微信招聘{% endif %}</td>
                         <td title="{{ row.remarks|striptags }}">
-                            <label class="label {% if row.status < 0 %}label-inverse{% elseif row.status==4 %}label-important{% else %}label-info{% endif %}">{{ applyStatus[row.status] }}</label>
+                            <label class="label {% if row.status < 0 %}label-inverse{% elseif row.status==4 or row.status==5 %}label-important{% else %}label-info{% endif %}">{{ applyStatus[row.status] }}</label>
                         </td>
                         <td>
                             {% if attaches[row.uid] is not empty %}
@@ -96,7 +102,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a class="btn btn-danger mini ajaxDo" data-refresh="true" title="您确定要删除该简历吗？" data-href="/admin/resume-delete.html?id={{ row.id }}" href="javascript:void(0);">删除</a>
+                            <!--<a class="btn btn-danger mini ajaxDo" data-refresh="true" title="您确定要删除该简历吗？" data-href="/admin/resume-delete.html?id={{ row.id }}" href="javascript:void(0);">删除</a>-->
                             <a class="btn btn-info mini dialogDo" data-refresh="true" data-container="container" data-href="/admin/resume-edit.html?id={{ row.id }}&status={{ row.status }}" href="javascript:void(0);">编辑</a>
                         </td>
                     </tr>
@@ -125,9 +131,8 @@
 <script type="text/javascript">
     $(function () {
         $('.download').on('click', function(e){
-            // e.stopPropagation();
             var url = $(this).data("url");
-            Http.confirm(url, '您确定要下载本附件吗');
+            window.open(url, '_blank');
         });
         var category = {% autoescape false %}{{ categories }}{% endautoescape %};
         var oldCategory = {% autoescape false %}{{ oldCategory }}{% endautoescape %};

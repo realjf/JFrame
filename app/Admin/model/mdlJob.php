@@ -56,7 +56,7 @@ class mdlJob extends mdlBase
      */
     public function getList($cond, $page = 1, $limit = 20)
     {
-        $data = $this->dbAdmin()->fetchWithPage(self::TABLE_JOB_INFO, '*', $cond, 'j_id desc', $limit, $page);
+        $data = $this->dbAdmin()->fetchWithPage(self::TABLE_JOB_INFO, '*', $cond, 'j_dateline desc,j_pub_status desc', $limit, $page);
         if($data['data']){
             $data['data'] = $this->fieldPrefixRm($data['data'], 'j_');
             foreach ($data['data'] as $k => $v){
@@ -142,25 +142,6 @@ class mdlJob extends mdlBase
     }
 
     /**
-     * 添加招聘岗位信息
-     * @param $data
-     * @return int
-     */
-    public function add($data) {
-        $dat['j_name'] = $data['job_name'];
-        $dat['j_category'] = intval($data['category']);
-        $dat['j_number'] = intval($data['number']);
-        $dat['j_school'] = intval($data['isschool']);
-        $dat['j_duty'] = isset($data['duty']) ? $data['duty'] : '';
-        $dat['j_place'] = $data['place'];
-        $dat['j_require'] = isset($data['require']) ? $data['require'] : '';
-        $dat['j_dateline'] = time();
-        $onDuplicate = " UPDATE j_name='".$dat['j_name']."',j_category=".$dat['j_category'].",j_place='".$dat['j_place']."',j_duty='".$dat['j_duty'].
-            "',j_require='".$dat['j_require']."',j_number=".$dat['j_number'].",j_school=".$dat['j_school'];
-        return $this->dbAdmin()->insert(self::TABLE_JOB_INFO, $dat, $onDuplicate);
-    }
-
-    /**
      * 更新招聘信息
      * @param $id
      * @param $data
@@ -168,20 +149,22 @@ class mdlJob extends mdlBase
      */
     public function updateJobById($id, $data)
     {
-        if(!$id){
-            return FALSE;
-        }
-        $cond = "j_id = " . intval($id);
+        $id = intval($id);
         $dat['j_name'] = $data['j_name'];
         $dat['j_category'] = intval($data['j_category']);
         $dat['j_number'] = intval($data['j_number']);
         $dat['j_school'] = intval($data['j_school']);
         $dat['j_duty'] = $data['j_duty'];
         $dat['j_place'] = $data['j_place'];
-        $dat['j_require'] = $data['j_require'];
+        $dat['j_require'] = $data['j_require'] ?: '';
         $dat['j_dateline'] = time();
         $dat['j_follow'] = intval($data['j_follow']); // 跟进人id
-        return $this->dbAdmin()->update(self::TABLE_JOB_INFO, $dat, $cond);
+        if($id){
+            $cond = "j_id = " . intval($id);
+            return $this->dbAdmin()->update(self::TABLE_JOB_INFO, $dat, $cond);
+        }else{
+            return $this->dbAdmin()->insert(self::TABLE_JOB_INFO, $dat);
+        }
     }
 
     /**

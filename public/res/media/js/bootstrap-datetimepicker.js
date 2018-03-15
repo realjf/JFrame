@@ -1423,9 +1423,9 @@
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
-								'<th class="prev"><i class="icon-angle-left"/></th>'+ //icon modifed by keenthemes.
+								'<th class="prev"><i class="icon-angle-left icon-arrow-left"/></th>'+ //icon modifed by keenthemes.
 								'<th colspan="5" class="switch"></th>'+
-								'<th class="next"><i class="icon-angle-right"/></th>'+//icon modifed by keenthemes.
+								'<th class="next"><i class="icon-angle-right icon-arrow-right"/></th>'+//icon modifed by keenthemes.
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
