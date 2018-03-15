@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_WARNING);
+// set timezone
 date_default_timezone_set("Asia/Shanghai");
 
 define("JFRAME_PATH", dirname(__DIR__));
