@@ -2,6 +2,10 @@
 
 class clsDatabase extends \Library\Database\PdoMysql
 {
+    public function __construct($config)
+    {
+        parent::__construct($config);
+    }
 
     const DB_COND_EMPTY = '/** empty */'; // 为防止误操作，所有条件为空的情况，请传本参数进来
 
@@ -94,7 +98,7 @@ class clsDatabase extends \Library\Database\PdoMysql
             return FALSE;
         }
         $sql = "SELECT count(*) as `rows` from {$table} {$cond}";
-        if(!$extract){
+        if(!$extract) {
             $sql = "explain {$sql}";
         }
         if($query = $this->query($sql)){
@@ -138,7 +142,7 @@ class clsDatabase extends \Library\Database\PdoMysql
             }
             $data = implode(",", $values);
         }
-        $sql = "update {$table} set {$data}";
+        $sql = sprintf("update %s set %s", $table, $data);
         $cond = self::mkCond($cond, TRUE);
         if($cond === FALSE){
             $this->__halt(json_encode($cond), array(999, 999, "Conditions can't be empty!"));

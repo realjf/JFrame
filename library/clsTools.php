@@ -272,15 +272,47 @@ class clsTools
 
     static public function multi($count, $perpage, $page = 1, $name = 'p', $q = TRUE)
     {
+        $page = intval($page);
         $data = [];
         $data['count'] = max(intval($count), 0);
         $data['perpage'] = max(intval($perpage), 1);
         $data['pagecount'] = ceil($data['count'] / $data['perpage']);
-        $data['page'] = max(1, intval($page));
+        $data['page'] = max(1, $page);
         $data['start'] = $data['perpage'] * $data['page'] - $data['perpage'];
         $data['mark'] = $data['start'] + 1;
+        $data['hasprev'] = $page > 1 && $page <= $data['pagecount'] ? 1 : 0;
+        $data['hasnext'] = $data['pagecount'] > 1 && $page < $data['pagecount'] ? 1 : 0;
         $data['url'] = self::multiUrl($name, $q);
+        $data['pagelink'] = self::multiPageLink($name, $q);
         return $data;
+    }
+
+    /**
+     * @param      $name
+     * @param bool $q
+     * @return string
+     */
+    static public function multiPageLink($name, $q = FALSE)
+    {
+        $uri = str_replace('%', '%%', urldecode($_SERVER['REQUEST_URI']));
+        $qs = explode("?", $uri, 2);
+
+        $uri = preg_replace("/-{$name}-\d*(-|$)/is", '$1', $qs[0]);
+
+        $qst = isset($qs[1]) ?: '';
+        if($qst){
+            $qst = preg_replace("/(^|&){$name}=\d*($|&)/is", '$1', $qs[1]);
+            $qst = preg_replace('/(^&|&$)/is', '', $qst);
+        }
+        if($q){
+            $qst .= ($qst ? "&" : "") . "$name=";   // 去掉%d，后面直接拼接页码
+        } else{
+            $t = explode(".", $uri, 2);
+            $t[0] = preg_replace("/-?{$name}-\d*/is", '', $t[0]);
+            $pagePre = substr($t[0], -1) == '/' ? '' : '-';
+            $uri = $t[0] . $pagePre . "{$name}-%d" . "." . $t[1];
+        }
+        return $uri . ($qst ? "?" . $qst : '');
     }
 
     /**
@@ -580,5 +612,25 @@ class clsTools
             $string = str_replace(' ', '&nbsp;', $string);
         }
         return $string;
+    }
+
+    /**
+     * 根据二维数组生成对应的 key - value 数组
+     * @param array  $arr
+     * @param string $key
+     * @param string $value
+     * @return array
+     */
+    static public function mkKeyValue($arr, $key, $value)
+    {
+        $result = array();
+        if(is_array($arr)){
+            foreach($arr as $v){
+                if(isset($v[$key])){
+                    $result[$v[$key]] = isset($v[$value]) ? $v[$value] : NULL;
+                }
+            }
+        }
+        return $result;
     }
 }

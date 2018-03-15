@@ -41,7 +41,7 @@ class clsVarFilter
      * @param null   $start
      * @return mixed|null|string
      */
-    public function toString($trim = FALSE, $default = '', $length = NULL, $start = NULL)
+    public function toString($trim = true, $default = '', $length = NULL, $start = NULL)
     {
         if(is_null($this->_value)){
             return $default;

@@ -185,16 +185,41 @@ class mdlJob extends mdlBase
     }
 
     /**
+     * 返回岗位id和类别
+     * @param $ids
+     * @return array|bool
+     */
+    public function getJobCategoryByIds($ids)
+    {
+        $ids = \clsTools::filterIds($ids);
+        if(!$ids){
+            return FALSE;
+        }
+        $cond = " j_id IN (".implode(',', $ids).")";
+        $field = "j_id, j_name, j_category";
+        $result = $this->dbAdmin()->fetch(self::TABLE_JOB_INFO, $field, $cond);
+        $data = array();
+        $result = $this->fieldPrefixRm($result, 'j_');
+        foreach ($result as $k => $v) {
+            $data[$v['id']] = [
+                'id' => $v['category'],
+                'category' => self::$_category[$v['category']]
+            ];
+        }
+        return $data;
+    }
+
+    /**
      * 返回岗位id和岗位名称
      * @param $ids
      * @return array
      */
     public function getJobNameById($ids) {
+        $ids = \clsTools::filterIds($ids);
         if(!$ids){
             return FALSE;
         }
-        $ids = is_array($ids) ? implode(',', $ids) : intval($ids);
-        $cond = " j_id IN (".$ids.")";
+        $cond = " j_id IN (".implode(',', $ids).")";
         $field = "j_id, j_name";
         $result = $this->dbAdmin()->fetch(self::TABLE_JOB_INFO, $field, $cond);
         $data = array();

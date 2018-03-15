@@ -24,7 +24,7 @@ class ctlBase extends Template
         'user-manager' => '用户管理 - 管理员',
         'job-index'       => '发布系统 - 职位管理',
         'job-post'      => '发布系统 - 发布新职位',
-        'job-fair'      => '发布系统 - 招聘会',
+        'fair-index'      => '发布系统 - 招聘会',
         'recruit-index' => '招聘系统 - 简历进程',
         'resume-index' => '招聘系统 - 简历库',
         'recruit-other'  => '招聘系统 - 其他渠道进度反馈',

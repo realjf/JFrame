@@ -120,7 +120,9 @@ class ctlUser extends ctlBase
         }
         if($id){
             // 4. 保存
-            $res = mdlLogin::instance()->updateUserInfo($id, $name, $oldName, $email, $opassword, $password, $rpassword);
+            $res = mdlLogin::instance()->updateUserInfo($id, $name, $email, $opassword, $password, $rpassword);
+            // 注销
+            mdlLogin::instance()->session('reset');
         }else{
             // 新增
             if(!$name || !$password || !$rpassword || !$email){
@@ -131,4 +133,11 @@ class ctlUser extends ctlBase
         $this->output($res);
     }
 
+    /**
+     * 管理员登录日志
+     */
+    public function funcLog()
+    {
+
+    }
 }

@@ -26,7 +26,7 @@ class clsResponse {
         $o          = new \stdClass();
         $o->code    = $code;
         $o->result  = $result;
-        $o->msg     = $msg;
+        $o->message     = $msg;
         header('Content-Type:' . $contentType . ';charset=utf-8');
         if (!$this->callback($o)) {
             $jsonString = json_encode($o, JSON_UNESCAPED_UNICODE);

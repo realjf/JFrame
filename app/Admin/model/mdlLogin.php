@@ -273,14 +273,13 @@ class mdlLogin extends mdlSysUser
      * 更新用户信息
      * @param $id
      * @param $username
-     * @param $oldName
      * @param $email
      * @param $opassword
      * @param $password
      * @param $rpassword
      * @return string
      */
-    public function updateUserInfo($id, $username, $oldName, $email, $opassword, $password, $rpassword)
+    public function updateUserInfo($id, $username, $email, $opassword, $password, $rpassword)
     {
         $id = intval($id);
         if(!$id){
@@ -294,15 +293,6 @@ class mdlLogin extends mdlSysUser
         // 判断密码一致性
         if(!$this->_matchPwd($password, $rpassword)){
             return "101:密码不一致";
-        }
-
-        // 判断用户名是否已存在
-        if(!$this->checkName($oldName, $id)){
-            return "101:用户名不存在";
-        }
-
-        if(!$this->checkName($username, $id)){
-            return "101:新用户名已存在";
         }
 
         $old = $this->get($id);
