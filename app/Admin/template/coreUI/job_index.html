@@ -3,12 +3,14 @@
 {% block page_content %}
 <!-- BEGIN EXAMPLE TABLE PORTLET-->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12" id="cn-media_list">
         <div class="card">
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> {{ pageTitle }}
                 <div class="btn-group pull-right">
-                    <a class="btn btn-success mini dialogDo" href="javascript:void(0);"  data-container="container" data-href="/admin/job-edit.html">新增</a>
+                    <a class="btn btn-danger mini multi_op" href="javascript:void(0);" data-href="/admin/job-op.html?action=multi_offShelf">批量下架</a>
+                    <a class="btn btn-info mini multi_op" href="javascript:void(0);" data-href="/admin/job-op.html?action=multi_publish">批量发布</a>
+                    <a class="btn btn-success mini dialogDo" href="javascript:void(0);"  data-container="container" data-href="/admin/job-edit.html">发布新职位</a>
                 </div>
             </div>
             <div class="card-block">
@@ -51,7 +53,7 @@
                 <table class="table table-bordered table-hover data-table table-striped with-check">
                     <thead>
                     <tr>
-                        <!--<th><input type="checkbox" name="title-table-checkbox"/></th>-->
+                        <th><input type="checkbox" class="group-checkable" value="0" data-set="#cn-media_list .checkboxes"/></th>
                         <th class="span2">#</th>
                         <th class="span5">职位名称</th>
                         <th class="span2">职位类别</th>
@@ -64,7 +66,7 @@
                     <tbody>
                     {% for key, row in data1 %}
                     <tr>
-                        <!--<td><input type="checkbox" id="{{ row.id }}"/></td>-->
+                        <td><input type="checkbox" class="checkboxes" value="{{ row.id }}" /></td>
                         <td>{{ key+1 }}</td>
                         <td>{{ row.name }}</td>
                         <td>{{ row.category }}</td>
@@ -97,6 +99,7 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
+                        <th><input type="checkbox" class="group-checkable" value="0" data-set="#cn-media_list .checkboxes"/></th>
                         <th class="span2">#</th>
                         <th class="span5">职位名称</th>
                         <th class="span2">职位类别</th>
@@ -109,6 +112,7 @@
                     <tbody>
                     {% for key, row in data2 %}
                     <tr>
+                        <td><input type="checkbox" class="checkboxes" value="{{ row.id }}" /></td>
                         <td>{{ key+1 }}</td>
                         <td>{{ row.name }}</td>
                         <td>{{ row.category }}</td>
@@ -147,23 +151,42 @@
 {% block js %}
 <script type="text/javascript">
     $(function () {
-        $("#btn-multi-release").on('click', function(){
+        $(".multi_op").on('click', function(){
             var ids = [];
-            $(":checkbox:checked", ".table").each(function(){
-                var id = $(this).parents("tr").find("input:checkbox").attr("id");
+            $(":checkbox:checked:not(.group-checkable)", ".table").each(function(){
+                var id = $(this).parents("tr").find("input:checkbox").val();
                 if(id){
                     ids.push(id);
                 }
             });
+            console.log(ids);
+            var url = $(this).data('href');
             $.ajax({
-                url: '/admin/job-op.html?action=publish&_AJAX_=' + Math.random(),
+                url: url,
                 dataType: 'json',
                 type: 'post',
-                data: {ids:ids.toString(),status:2},
+                data: {ids:ids.toString()},
                 success: function (res) {
                     UIModals.tips(res.code, res.message);
+                    if(res.code == 100){
+                        window.location.reload(true);
+                    }
                 }
             });
+        });
+        
+        $(".group-checkable").on('click', function () {
+            if($(this).is(':checked')){
+                $(this).parents('table').find('input[type="checkbox"]').each(function(){
+                    //此处如果用attr，会出现第三次失效的情况
+                    $(this).prop("checked",true);
+                });
+            }else{
+                $(this).parents('table').find('input[type="checkbox"]').each(function(){
+                    $(this).removeAttr("checked",false);
+                });
+                //$(this).removeAttr("checked");
+            }
         });
     })
 </script>

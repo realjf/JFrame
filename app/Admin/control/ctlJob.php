@@ -134,8 +134,30 @@ class ctlJob extends ctlBase
                 $this->assign('data', $data);
             }
             $this->display('job_post.html');
+        }elseif($action == 'multi_publish'){ // 批量发布
+            $this->_multiJob(mdlJob::PUB_YES);
+        }elseif($action == 'multi_offShelf'){   // 批量下架
+            $this->_multiJob(mdlJob::PUB_NO);
         }else{
             $this->output('99:操作失败');
         }
+    }
+
+    /**
+     * 批量发布/下架
+     * @param $status
+     */
+    private function _multiJob($status)
+    {
+        $ids = \clsVars::post('ids')->toString();
+        $ids = \clsTools::filterIds($ids);
+        if(!$ids){
+            $this->output('101:请至少选择一个职位');
+        }
+        $res = mdlJob::instance()->setPubStatus($ids, $status);
+        if($res !== FALSE){
+            $this->output('100:操作成功');
+        }
+        $this->output('99:操作失败');
     }
 }

@@ -3074,7 +3074,10 @@ header.navbar {
   border-bottom: 1px solid #f86c6b; }
 
 .card-header .btn {
-  margin-top: -0.5rem; }
+  margin-top: -0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 
 .card-header .btn-sm, .card-header .btn-group-sm > .btn {
   margin-top: -0.25rem; }

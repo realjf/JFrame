@@ -162,4 +162,70 @@ class ctlResume extends ctlBase
         }
         // 1. 删除用户
     }
+
+    /**
+     * 导出
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function funcExport()
+    {
+        $this->needLogin();
+
+        $fileName = "简历库excel_" . date('Ymd', time());
+        $objPHPExcel = new \PHPExcel();
+        $limit = min(1000, $this->defaultPerPage);
+        $cond = $this->_getFilter();
+        $page = \clsVars::get('p')->toInt(1, 1);
+        $data = mdlResumeOp::instance()->getDeliverLogList($cond, $page, $limit);
+        $data = $data['data'] ?: [];
+        if($data){
+            $data = array_values($data);
+            $jobIds = \clsTools::mkKey($data, 'job_id', true);
+            $jobs = mdlJob::instance()->getJobNameById($jobIds);
+            $uids = \clsTools::mkKey($data, 'uid', true);
+            $users = mdlResumeOp::instance()->getResumeByUids($uids);
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', '#')
+                ->setCellValue('B1', '姓名')
+                ->setCellValue('C1', '职位')
+                ->setCellValue('D1', '电话')
+                ->setCellValue('E1', '性别')
+                ->setCellValue('F1', '学历')
+                ->setCellValue('G1', '学校')
+                ->setCellValue('H1', '专业')
+                ->setCellValue('I1', '毕业时间')
+                ->setCellValue('J1', '邮箱')
+                ->setCellValue('K1', '渠道')
+                ->setCellValue('L1', '求职状态');
+            $num = 2;
+            foreach ($data as $k => $v) {
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $num, $k+1)
+                    ->setCellValue('B' . $num, $users[$v['uid']]['name'])
+                    ->setCellValue('C' . $num, $jobs[$v['job_id']])
+                    ->setCellValue('D' . $num, $users[$v['uid']]['phone'])
+                    ->setCellValue('E' . $num, $users[$v['uid']]['sex'])
+                    ->setCellValue('F' . $num, $users[$v['uid']]['degree'])
+                    ->setCellValue('G' . $num, $users[$v['uid']]['school'])
+                    ->setCellValue('H' . $num, $users[$v['uid']]['major'])
+                    ->setCellValue('I' . $num, $users[$v['uid']]['graduation_date'])
+                    ->setCellValue('J' . $num, $users[$v['uid']]['email'])
+                    ->setCellValue('K' . $num, $v['from'] == 1 ? '官网' : '微信招聘')
+                    ->setCellValue('L' . $num, \defConst::$audit_status[$v['status']]);
+                $num++;
+            }
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle($fileName);
+        $objPHPExcel->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$fileName.'.xls"');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
+    }
 }

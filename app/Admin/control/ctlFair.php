@@ -49,6 +49,7 @@ class ctlFair extends ctlBase
      */
     public function funcEdit()
     {
+        $this->needLogin();
         $action = \clsVars::get('action')->toString();
         if($action == 'save'){
             $id = \clsVars::post('id')->toInt();

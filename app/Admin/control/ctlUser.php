@@ -138,6 +138,6 @@ class ctlUser extends ctlBase
      */
     public function funcLog()
     {
-
+        $this->needLogin();
     }
 }

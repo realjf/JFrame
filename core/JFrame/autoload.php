@@ -30,6 +30,7 @@ class autoload
                     $dir = JFRAME_APP_PATH . '/';
                     break;
                 default:
+                    $dir = JFRAME_LIBRARY_PATH . '/';
                     break;
             }
         }

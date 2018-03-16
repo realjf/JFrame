@@ -229,17 +229,17 @@ class mdlJob extends mdlBase
 
     /**
      * 设置发布状态
-     * @param $id
+     * @param $ids
      * @param $status
      * @return int
      */
-    public function setPubStatus($id, $status){
-        if(!$id){
+    public function setPubStatus($ids, $status){
+        $ids = \clsTools::filterIds($ids, 0);
+        if(!$ids){
             return FALSE;
         }
-        $id = intval($id);
         $status = intval($status)==2 ? self::PUB_YES : self::PUB_NO;
-        $cond = "j_id = ".$id;
+        $cond = "j_id in(" . implode(",", $ids) . ")";
         $data = [
             "j_pub_status" => $status,
             "j_dateline" => time()

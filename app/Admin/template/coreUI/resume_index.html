@@ -19,6 +19,9 @@
         <div class="card">
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> {{ pageTitle }}
+                <div class="btn-group pull-right">
+                    <a class="btn btn-success mini export" href="/admin/resume-export.html" target="_blank">导出Excel</a>
+                </div>
             </div>
             <div class="card-block">
                 <div class="row-fluid search-forms search-default">
@@ -140,6 +143,7 @@
             url: '/admin/resume-index.html',
             scope: 'FilterQuery3',
             data:category,
+            text: '职位类别',
             oldData: oldCategory,
             valueId: 'categories_value,status_value',
             onChange:function(newValue){
@@ -153,6 +157,7 @@
             scope: 'FilterQuery3',
             multiple: true,
             data:statuses,
+            text: '求职状态',
             oldData: oldStatus,
             onChange:function(newValue){
                 $('#status_value').val(newValue);
