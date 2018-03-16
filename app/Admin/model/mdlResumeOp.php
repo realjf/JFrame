@@ -1,11 +1,4 @@
 <?php
-/**
- * 用户简历信息操作
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/3/6
- * Time: 15:11
- */
 
 namespace Module\Admin;
 

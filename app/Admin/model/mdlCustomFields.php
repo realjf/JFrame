@@ -1,11 +1,5 @@
 <?php
-/**
- * 扩展字段
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/3/9
- * Time: 16:55
- */
+
 
 namespace Module\Admin;
 

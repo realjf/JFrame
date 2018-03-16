@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/2/5
- * Time: 17:16
- */
+
 
 namespace Core\JFrame;
 

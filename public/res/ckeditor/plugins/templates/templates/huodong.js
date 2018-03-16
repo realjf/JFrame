@@ -577,7 +577,7 @@ shareCallback = ["qqShareCallback", "qzoneShareCallback", "wxShareCallback"];\
                 actId : shareMessageId, \
                 actUrl : window.location.href, \
                 pc : "sf", \
-                android : "http://huodong.4399.cn/daily/app-yxh.html?chn=game4399", \
+                android : "http://huodong.realjf.cn/daily/app-yxh.html?chn=game4399", \
                 ios : "https://itunes.apple.com/cn/app/4399you-xi-mi-you-xi-zi-xun/id743599908?mt=8", \
                 wx : "http://a.app.qq.com/o/simple.jsp?pkgname=com.m4399.gamecenter&ckey=CK1310382934544", \
                 tj : "" \

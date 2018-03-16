@@ -1,11 +1,4 @@
 <?php
-/**
- * 用户管理
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/2/23
- * Time: 16:32
- */
 
 namespace Module\Admin;
 

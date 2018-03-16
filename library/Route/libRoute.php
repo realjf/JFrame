@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Chen Jiefeng
- * Date: 2017/10/29
- * Time: 17:14:05
- */
+
 
 namespace Library\Route;
 

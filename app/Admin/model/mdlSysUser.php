@@ -100,7 +100,7 @@ class mdlSysUser extends mdlBase
     final protected function encryptPwd($password, $salt)
     {
         $str = $password . '_' . $salt;
-        return md5('wx.hr.4399.com_' . $str);
+        return md5('wx.hr.realjf.com_' . $str);
     }
 
     /**

@@ -1,11 +1,5 @@
 <?php
-/**
- * json对象操作
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/3/6
- * Time: 17:34
- */
+
 
 namespace Module\Admin;
 

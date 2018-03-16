@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/2/13
- * Time: 16:31
- */
+
 
 namespace Module\Admin;
 

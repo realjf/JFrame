@@ -1,11 +1,4 @@
 <?php
-/**
- * 文件下载
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/3/5
- * Time: 13:40
- */
 
 namespace Module\Admin;
 

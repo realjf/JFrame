@@ -1,11 +1,4 @@
 <?php
-/**
- * web简历表操作
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/3/9
- * Time: 16:50
- */
 
 namespace Module\Admin;
 

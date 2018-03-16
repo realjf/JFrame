@@ -1,11 +1,4 @@
 <?php
-/**
- * 发布系统
- * Created by PhpStorm.
- * User: 4399-3046
- * Date: 2018/2/23
- * Time: 16:33
- */
 
 namespace Module\Admin;
 
