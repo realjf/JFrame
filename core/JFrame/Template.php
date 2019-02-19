@@ -11,8 +11,17 @@ class Template
      * @var array \Twig_Environment
      */
     protected $__loader;
+    /**
+     * 渲染数据
+     * @var array
+     */
     private $__data = [];
     public $defaultPerPage = 20;
+    /**
+     * 自定义twig filter扩展
+     * @var array \Twig_SimpleFilter
+     */
+    protected $__filter = [];
 
     public function __construct()
     {
@@ -98,7 +107,15 @@ class Template
         return $pages;
     }
 
-    public function display($tpl, $data = [], $tplDir = '')
+    /**
+     * 模板渲染
+     * @param $tpl
+     * @param array $data
+     * @param string $tplDir
+     * @param bool $return
+     * @return mixed
+     */
+    public function display($tpl, $data = [], $tplDir = '', $return = false)
     {
         $theme = Config::instance()->read('app.theme');
         $tplDir = $tplDir ?:  JFRAME_APP_PATH . "/" . ucfirst($this->__options['module']) . '/template/' . $theme;
@@ -112,10 +129,28 @@ class Template
             foreach($this->__data as $key => $val){
                 $data[$key] = $val;
             }
+            // 添加自定义模板过滤函数
+            $this->__loader[$theme]->addFilter(new \Twig_SimpleFilter('version',  function ($file){
+                if( file_exists($_SERVER['DOCUMENT_ROOT'] . $file) ) {
+                    $ver = @filemtime($_SERVER['DOCUMENT_ROOT'] . $file);
+                } else {
+                    $ver = 1;
+                }
+                return  '?_=' .$ver;
+            }));
+            if($return){
+                return $this->__loader[$theme]->render($tpl, $data);
+            }
             $this->__loader[$theme]->display($tpl, $data);
         }catch (\Exception $e){
-            var_dump($e->getMessage());
-            exit();
+            $error = [
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'message' => $e->getMessage(),
+                'trace' => $e->getTrace(),
+            ];
+            __a($error);
         }
     }
 
@@ -128,14 +163,38 @@ class Template
         $response->response($code, $result, $msg);
     }
 
-    public function response($code, $result = NULL, $msg = '') {
+    public function response($code, $result = NULL, $msg = '', $contentType = 'application/json') {
         $response = new \clsResponse();
-        $response->response($code, $result, $msg);
+        $response->response($code, $result, $msg, $contentType);
     }
-
 
     public function funcIndex()
     {
         echo "ok";
+    }
+
+    /**
+     * 添加模板过滤函数
+     * @param $name
+     * @param $callback
+     */
+    public function addFilter($name, $callback)
+    {
+        $filter = new \Twig_SimpleFilter($name, $callback);
+        $this->__filter[$name] = $filter;
+    }
+
+    /**
+     * 自定义 - 版本输出函数
+     * @param $file
+     * @return string
+     */
+    public function __version__($file){
+        if( file_exists($_SERVER['DOCUMENT_ROOT'] . $file) ) {
+            $ver = @filemtime($_SERVER['DOCUMENT_ROOT'] . $file);
+        } else {
+            $ver = 1;
+        }
+        return  '?_=' .$ver;
     }
 }
