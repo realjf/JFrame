@@ -161,7 +161,7 @@ class clsTools
                 break;
             }
         }
-        $res = substr($string, $start, $i);
+        $res = mb_substr($string, $start, $i, 'utf-8');
         if($charset != 'utf-8'){
             $res = iconv('utf-8', $charset, $res);
         }
@@ -632,5 +632,83 @@ class clsTools
             }
         }
         return $result;
+    }
+
+    /**
+     * 校验手机号
+     * @param $mobile
+     * @param bool $batch
+     * @return bool
+     */
+    static public function checkPhoneNumber($mobile, $batch = false)
+    {
+        if ($batch) {
+            $mobile = \clsTools::filterIds($mobile);
+            $newMobile = [];
+            foreach ($mobile as $phone){
+                if(!self::_limitLength($phone)){
+                    continue;
+                }
+                if(!preg_match(self::_getPhoneRules(), $phone, $match)){
+                    continue;
+                }
+                if(!$match[1] && !$match[3]){
+                    continue;
+                }
+                $newMobile[] = $phone;
+            }
+            $newMobile = array_unique($newMobile);
+            return $newMobile ? implode(',', $newMobile) : FALSE;
+        }else{
+            if (!self::_limitLength($mobile)) {
+                return false;
+            }
+            if(!preg_match(self::_getPhoneRules(), $mobile, $match)){
+                return false;
+            }
+            if(!$match[1] && !$match[3]){
+                return false;
+            }
+            return $mobile;
+        }
+    }
+
+    /**
+     * @param $phone
+     * @return bool
+     */
+    static private function _limitLength($phone)
+    {
+        $len = strlen(trim($phone));
+        if($len != 11){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    static private function _getPhoneRules()
+    {
+        /**
+         * 移动: 134,135,136,137,138,139,150,151,152,157,158,159,187,188,182,183,147,184,178,198
+         * 联通：130,131,132,154,155,156,145,185,186,175,176,166,1400
+         * 电信：133,153,180,181,189,177,173,199,191
+         * 虚拟运营商：
+         *    电信：1700,1701,1702,162
+         *    移动：1703,1705,1706,165
+         *    联通：1704,1707,1708,1709,171,167
+         *    卫星通信：1349
+         */
+        $rules = "((134|135|136|137|138|139|150|151|152|157|158|159|187|188|182|183|147|184|198|178|165";
+        $rules .= "|130|131|132|154|155|156|145|185|186|171|175|176|166|167";
+        $rules .= "|133|153|180|181|189|177|173|199|191|162)";
+        $rules .= "[0-9]{8})";
+        $rules .= "|((1703|1705|1706";
+        $rules .= "|1704|1707|1708|1709|1400";
+        $rules .= "|1700|1701|1702)";
+        $rules .= "[0-9]{7})";
+        return "/^{$rules}$/";
     }
 }

@@ -11,7 +11,7 @@ class mdlLogin extends mdlSysUser
     /**
      * 系统管理员会话加密密钥
      */
-    const SYS_SERVER_ADMIN_SESSION_KEY = 'gi23@#f*%p$3s#';
+    const SYS_SERVER_ADMIN_SESSION_KEY = 'g1h6($f)*@%9g#';
 
     /**
      * cookie路径
@@ -23,7 +23,7 @@ class mdlLogin extends mdlSysUser
      * cookie名称
      * @var string
      */
-    private $_cookieName = "_wx_hr_admin_v2_";
+    private $_cookieName = "_your_cookie_name_";
 
     /**
      * 过期时间

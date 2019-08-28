@@ -10,7 +10,7 @@ class mdlDescrypt extends mdlBase
      * 长度8 密钥
      * @var string
      */
-    static private $_salt = '3@j*l&8#';
+    static private $_salt = 'f#@$kjg)';
 
     /**
      * 加密字符串
