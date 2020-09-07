@@ -10,6 +10,7 @@ define("JFRAME_CONFIG_PATH", JFRAME_PATH . '/config');
 define("JFRAME_LIBRARY_PATH", JFRAME_PATH . '/library');
 define("JFRAME_RESOURCE_PATH", JFRAME_PATH . '/public');
 define("JFRAME_DEF_PATH", JFRAME_PATH . '/def');
+define("JFRAME_MODEL_PATH", JFRAME_PATH . '/model');
 
 define('FRAME_ENV_IS_CLI', PHP_SAPI == 'cli');
 
