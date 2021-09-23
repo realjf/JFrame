@@ -20,6 +20,14 @@ if(SYS_IS_ONLINE){
         $JFrame->run();
     }catch (Exception $e){
         echo("999:system error!");
+        $error = [
+            "message" => $e->getMessage(),
+            "trace" => $e->getTraceAsString(),
+            "code" => $e->getCode(),
+            "line" => $e->getLine(),
+            "file" => $e->getFile(),
+        ];
+        \clsLogger::write($error);
         exit();
     }
 }else{

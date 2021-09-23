@@ -48,11 +48,13 @@ class MiniProgram
         $url = self::makeUrl($code);
         $result = self::send($url);
         $data = $this->_formatData($result);
+        $userInfo = array();
         if(!isset($result['unionid']) || !$result['unionid']){
             // 如果不存在 unionid，则用session_key解码
             $unionId = self::_descrypt($result['session_key'], $encryptedData, $iv);
             $data['unionid'] = $unionId['unionId'];
             if($data['unionid']){
+                $userInfo = $unionId;
                 $data['errcode'] = 0;
             }
         }
@@ -71,7 +73,7 @@ class MiniProgram
                 break;
             case 0:
                 // 请求成功，注册用户信息
-                if(($uid = $this->_updateUser($data['unionid'])) <= 0){
+                if(($uid = $this->_updateUser($data['unionid'], $userInfo)) <= 0){
                     $data['message'] = "登录失败";
                 }else{
                     $data["message"] = "";
@@ -179,12 +181,27 @@ class MiniProgram
      * @param $unionid
      * @return bool
      */
-    private function _updateUser($unionid)
+    private function _updateUser($unionid, $userInfo = [])
     {
         if(!$unionid){
             return 0;
         }
         // 注册新用户
+        $data['wxid'] = $unionid;
+        if($userInfo){
+            if($userInfo["avatarUrl"]){
+                $data["headimgurl"] = $userInfo["avatarUrl"] ?: "";
+            }
+            
+            if($userInfo["nickName"]){
+                $data["nick"] = $userInfo["nickName"] ? base64_encode($userInfo["nickName"]) : "";
+            }     
+
+            $data['sex'] = $userInfo['gender'] ? $userInfo['gender'] : 0;
+            $data['address'] = $userInfo['country'].'-'.$userInfo['province'].'-'.$userInfo['city'];
+        }else{
+            
+        }
 
         return ;
     }

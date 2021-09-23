@@ -137,7 +137,7 @@ class WeChatSDK{
     public function getOauth2AuthorizeUrl($redirect_uri, $state)
     {
         // 线上环境返回验证token
-        if(SYS_ENV_IS_ONLINE){
+        if(SYS_IS_ONLINE){
             if($state){
                 $state .= '&';
             }
