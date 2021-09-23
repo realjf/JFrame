@@ -44,4 +44,28 @@ class ctlIndex extends ctlBase
         // 注册
         $this->response(100, [$this->__cookie], "登录成功");
     }
+
+
+    /**
+     * 获取二维码
+     */
+    public function funcGetQrCode()
+    {
+        $code = \clsVars::get("code")->toString(true);
+        $id = \clsVars::get("id")->toInt(); // 职位id
+        $qrcode = "";
+        $url = "";
+        if($url){
+            return \Library\Phpqrcode\QrCodeSdk::png($url); // 生成微信端招聘页二维码
+        }
+        if($qrcode){
+            header("Content-Type: image/png; application/octet-stream");
+            echo $qrcode;
+            exit();
+        }else{
+            header("HTTP/1.1 404 Not Found");
+            header("Status: 404 Not Found");
+            exit();
+        }
+    }
 }
