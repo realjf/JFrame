@@ -31,7 +31,7 @@ class clsLogger
         $this->log_file_path     = self::LOG_FILE_PATH;
         $this->log_switch        = self::LOG_SWITCH;
         $this->log_max_len       = self::LOG_MAX_LEN;
-        $this->$log_file_date    = date("Ymd") . "_";
+        $this->log_file_date    = date("Ymd") . "_";
     }
 
     /** 
@@ -70,7 +70,7 @@ class clsLogger
         if ($this->log_switch) {
 
             if (self::$handle == NULL) {
-                $filename = $this->log_file_pre . $this->$log_file_date . $this->get_max_log_file_suf();
+                $filename = $this->log_file_pre . $this->log_file_date . $this->get_max_log_file_suf();
                 self::$handle = fopen($this->log_file_path . $filename, 'a');
             }
             switch ($type) {
@@ -111,7 +111,7 @@ class clsLogger
                     $log_file_suf = 0;
                 }
                 //截断文件  
-                if (file_exists($this->log_file_path . $this->log_file_pre . $this->$log_file_date . $log_file_suf) && filesize($this->log_file_path . $this->log_file_pre . $this->$log_file_date . $log_file_suf) >= $this->log_max_len) {
+                if (file_exists($this->log_file_path . $this->log_file_pre . $this->log_file_date . $log_file_suf) && filesize($this->log_file_path . $this->log_file_pre . $this->log_file_date . $log_file_suf) >= $this->log_max_len) {
                     $log_file_suf = intval($log_file_suf) + 1;
                 }
 
